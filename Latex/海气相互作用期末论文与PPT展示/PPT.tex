@@ -1,0 +1,361 @@
+\documentclass[14pt]{beamer}
+\useoutertheme{default}
+
+% Alternative design for title
+%\setbeamercolor{frametitle}{fg=red}
+%\setbeamerfont{frametitle}{series=\bfseries}
+%\setbeamertemplate{frametitle}
+%{
+%\begin{centering}
+%\insertframetitle\par
+%\end{centering}
+%}
+\usepackage{graphicx}
+\usepackage{exscale}
+\usepackage{colortbl}
+\usepackage{relsize}
+\setbeamercolor{titlelike}{fg=white,bg=cyan}
+%\setbeamercolor{normal text}{fg=white,bg=black}
+% I use Palatino for all text
+\usefonttheme{serif}
+\usepackage{mathpazo} % math & rm
+\linespread{1.1}        % Palatino needs more leading (space between lines)
+\normalfont
+\usepackage[T1]{fontenc}
+% One could use the concrete fonts by Knuth
+%\usepackage{concmath}
+%\usepackage{eulervm}
+% For larger spacing of table rows
+\renewcommand{\arraystretch}{1.5}
+% \setbeamercolor{background canvas}{bg=magenta!10}
+\setbeamertemplate{itemize items}[square]
+\setbeamercolor{itemize item}{fg=gray}
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{galaxy1}}
+% To change margins for all slides
+%\setbeamersize{text margin left=0.5cm,text margin right=0.5cm}
+% To change margin on one slide only
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
+% More typesetting environments and options for mathematics
+% \usepackage{amsmath}
+% Fancy fonts for mathematics
+% \usepackage{amsfonts}
+\title{The climate effect of Arctic sea ice decrease}
+\author{Qifeng Qian}
+\institute{CESS, Tsinghua University}
+\date{}
+
+\begin{document}
+% TODO
+% Separately mark 2HDM and singlet terms
+% More citations
+%
+\frame[plain]{\titlepage
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item \textbf{Introduction}
+\item Observation
+\item Numerical tests
+\item Simulation results
+\item Simple analysis
+\item Summary
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Introduction}
+Global warming:
+\begin{itemize}
+\item atmosphere and ocean are warming up
+\item total amount of ice and snow are decreasing
+\item sea level are increasing
+\item ...
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Introduction}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig02.png}  
+\caption{Areas of Arctic sea ice}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Introduction}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig03.png}  
+\caption{The areas of spring snow in northern hemisphere}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Introduction}
+From 1979, Arctic sea ice is decreasing in every season, every continuous ten years. The reconstruction data shows that Arctic sea ice disappeared speed and the increasing rate of sea level is never happened since 1459. The snow cover area is decrease from the middle of 20th century. It seems that the Arctic sea ice may totally disappear in the coming 30 years.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Introduction
+\item \textbf{Observation}
+\item Numerical tests
+\item Simulation results
+\item Simple analysis
+\item Summary
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Observation}
+Data:
+\begin{itemize}
+\item  Sea ice index from http://nsidc.org/data/G02135
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Observation}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=2.0in]{fig10.png}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Observation}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig11.png}  
+\caption{Arctic sea ice area and linear trend}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Introduction
+\item Observation
+\item \textbf{Numerical tests}
+\item Simulation results
+\item Simple analysis
+\item Summary
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Numerical tests}
+Experiment:
+\begin{itemize}
+\item CAM3
+\item MODEL.SST.HAD187001-198110.OI198111-201203
+\item MODEL.ICE.HAD187001-198110.OI198111-201203
+\item Sea ice abundant period: 1980-1991
+\item Sea ice sparce period: 1980-1991
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Introduction
+\item Observation
+\item Numerical tests
+\item \textbf{Simulation results}
+\item Simple analysis
+\item Summary
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (data substitution)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig12.png}  
+\caption{The difference of 10 years mean: total precipitation (upper left), surface temperature (upper right), 200hPa geopotential height (lower left), 500hPa geopotential height (lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (data substitution)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig13.png}  
+\caption{The difference of 10 years mean: total precipitation in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (data substitution)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig14.png}  
+\caption{The difference of 10 years mean: surface temperature in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (data substitution)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig15.png}  
+\caption{The difference of 10 years mean: 200hPa geopotential height in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (data substitution)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig16.png}  
+\caption{The difference of 10 years mean: 500hPa geopotential height in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (data substitution)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig17.png}  
+\caption{The difference of 10 years mean: sea level pressure in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (data substitution)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig18.png}  
+\caption{The difference of 10 years mean: 850hPa specific humidity in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (numerical tests)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig19.png}  
+\caption{The difference of 10 years mean: total precipitation (upper left), surface temperature (upper right), 200hPa geopotential height (lower left), 500hPa geopotential height (lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (numerical tests)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig20.png}  
+\caption{The difference of 10 years mean: total precipitation in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (numerical tests)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig21.png}  
+\caption{The difference of 10 years mean: surface temperature in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (numerical tests)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig22.png}  
+\caption{The difference of 10 years mean: 200hPa geopotential height in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (numerical tests)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig23.png}  
+\caption{The difference of 10 years mean: 500hPa geopotential height in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (numerical tests)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig24.png}  
+\caption{The difference of 10 years mean: sea level pressure in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simulation results (numerical tests)}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig25.png}  
+\caption{The difference of 10 years mean: 850hPa specific humidity in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Introduction
+\item Observation
+\item Numerical tests
+\item Simulation results
+\item \textbf{Simple analysis}
+\item Summary
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simple analysis}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig26.png}  
+\caption{The change of EP flux}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Simple analysis}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig27.png}  
+\caption{The change of EP flux in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Introduction
+\item Observation
+\item Numerical tests
+\item Simulation results
+\item Simple analysis
+\item \textbf{Summary}
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Summary}
+In this paper, we try to explore the climate impact of decreasing of Arctic sea ice. The most profound effect is that it will affect the general circulation while its mechanism is not clear yet. The decreasing of sea ice will also affect the global precipitation, relative humidity and so on. All the physical processes need further investigation.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{ }
+\centering{Thanks}\par
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

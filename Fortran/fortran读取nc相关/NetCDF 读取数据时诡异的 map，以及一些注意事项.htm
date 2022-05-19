@@ -1,0 +1,763 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>NetCDF 读取数据时诡异的 map-勇敢的心 -搜狐博客</title>
+<meta name="Keywords" content="NetCDF 读取数据时诡异的 map" />
+<meta name="description" content="NetCDF 读取数据时诡异的 map" />
+<meta name="robots" content="index,follow" />
+<script type="text/javascript">
+var JSPATH = {},
+HCP='http://js2.pp.sohu.com.cn/ppp/js/common_v_20120320/',
+HMP='http://js4.pp.sohu.com.cn/ppp/js/module_v_20130922/',
+HTP='http://js5.pp.sohu.com.cn/ppp/js/tool_v_090418/';
+JSPATH.util={common:HCP+'common.js',module:HMP,tool:HTP};
+
+var BLOG_SP = 'http://js3.pp.sohu.com.cn/ppp/blog/js_ppp_v_20130412/';
+JSPATH.blog={_path:BLOG_SP};
+
+var TP = 'http://js2.pp.sohu.com.cn/ppp/group/toolbar_v_090827/';
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="http://js3.pp.sohu.com.cn/ppp/blog/entry_v_20130722/css/revoArticle.v.2013072220.css" /> 
+<link href="http://js2.pp.sohu.com.cn/ppp/blog/themes_ppp_v_201312061147/def/style.css" rel="stylesheet" type="text/css" />
+
+
+<link id="themeCss" href="http://js2.pp.sohu.com.cn/ppp/blog/themes_ppp_v_201312061147/p1002/style.css" themeid="p1002" rel="stylesheet" type="text/css" />
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://goodluck1982.blog.sohu.com/rss" />
+</head>
+<body>
+<a name="top"></a>
+<script type="text/javascript">
+var _blog_base_url = 'http://goodluck1982.blog.sohu.com/';
+var _blog_base_path = 'http://goodluck1982.blog.sohu.com/';
+var _blog_domain='goodluck1982';
+var _ebi = 'c3997b3792';
+var _ept = 'goodluck_1982';
+var _xpt = 'Z29vZGx1Y2tfMTk4MkBzb2h1LmNvbQ==';
+var _upt = 'Z29vZGx1Y2tfMTk4MkBzb2h1LmNvbQ==';
+var $blog_config = {
+		
+};
+</script>
+ 	<!-- <link rel="stylesheet" type="text/css" href="http://js6.pp.sohu.com.cn/core/js/jquery/itoolbar/global.css" charset="utf-8"/> -->
+    <script type="text/javascript">
+          var toolbarSysRec = [
+                                
+                   
+                   
+];
+
+function showToolbarAd(){
+	try {
+	        if (toolbarSysRec) {
+	                var len = toolbarSysRec.length;
+	                if (!toolbarSysRec[len - 1]) {
+	                        len = len - 1;
+	                }
+	                var n = Math.floor(Math.random() * len);
+	                var rd = toolbarSysRec[n];
+	                return '<a href="'+ rd.tip.url + '" target="_blank" onmousedown="CA.q(\'toolbar_tips\');">'
+	                                                + rd.tip.title + '</a>';
+	        }
+	} catch (err) {
+		
+	}
+     return '';
+}
+</script>
+<div id="isohu-topbar" data-appid="1019" data-type="blog" ></div>
+ 
+       
+<div id="_preLoadText" style="text-align:center;">loading...</div>
+
+<script type="text/javascript" src="http://js5.pp.sohu.com.cn/ppp/js/jquery.js?v=20130722" charset="utf-8"></script>
+<script type="text/javascript">
+var SP = BLOG_SP;
+var ThP = 'http://js2.pp.sohu.com.cn/ppp/blog/themes_ppp_v_201312061147/';
+var WP = '/ppp/blog/widgets_v_2013111418/';
+var UWAP = 'http://js3.pp.sohu.com.cn/ppp/blog/widgets_v_080920/uwa_widget/';
+document.write('<scr'+'ipt type="text/javascript" src="'+ SP + 'sohublog.js"></scr'+'ipt>');
+</script>
+<script type="text/javascript">
+var utf8jss = [SP+'common.v.20130916.js', 'http://r.suc.itc.cn/combo.action?v.120412&r=/itoolbar/core/base64.js|/itoolbar/core/jquery.cookie.js|/itoolbar/core/jquery.easing.js|/itoolbar/core/jquery.hotmap.js|/itoolbar/core/passport.js&t=js&c=utf-8'];
+lsl([HCP+'common.js'], 'utf-8');
+lsl(['http://js2.pp.sohu.com.cn/ppp/blog/js_v_100326/pp18030_all.v.13042501.js', HTP+'effect.js']);
+lsl(utf8jss, 'utf-8');
+var noToolBar = true;
+lsl([TP+'toolbar.v.20130716.js'], 'utf-8');
+</script>
+<div id="ms_toolbar" data-appid="001" data-type="blog"></div>
+<script type="text/javascript" src="http://r.suc.itc.cn/loader.action?key=mstoolbar.blog" charset="utf-8"></script>
+
+<div id="wrapper">
+	<div id="innerWrapper" >
+		
+
+
+
+<div id="header">
+  <div id="playerBox"><div id="innerPlayerBox"></div></div>
+  <div id="innerHeader">
+  
+	<div id="blogLogo"><a href="http://blog.sohu.com"><img src="http://js1.pp.sohu.com.cn/ppp/blog/styles_ppp/images/spacer.gif" id="logo" alt="搜狐博客" /></a></div>
+	<h1 id="blogTitle"><a href="http://goodluck1982.blog.sohu.com/"  id="blogAdmin" onmousedown="CA.q('blog_header_title');">勇敢的心 </a></h1>
+	<div id="blogUrl">
+		<!-- a href="http://goodluck1982.blog.sohu.com/">http://goodluck1982.blog.sohu.com/</a --> 
+		<a href="http://goodluck1982.blog.sohu.com/" class="navUrl" title="查看勇敢的心 的首页"><img src="http://js1.pp.sohu.com.cn/ppp/blog/styles_ppp/images/custom/icons/house.gif" alt="首页" align="absmiddle"  border="0"/></a><a href="http://goodluck1982.blog.sohu.com/" class="navUrl" title="查看勇敢的心 的首页">首页</a>
+        <a href="http://goodluck1982.blog.sohu.com/entry/" class="navUrl" title="查看勇敢的心 的日志" onmousedown="CA.q('blog_header_entry');"><img src="http://js1.pp.sohu.com.cn/ppp/blog/styles_ppp/images/ico_entry.gif" alt="日志" align="absmiddle"  border="0"/></a><a href="http://goodluck1982.blog.sohu.com/entry/" target="_blank" class="navUrl" title="查看勇敢的心 的日志" onmousedown="CA.q('blog_header_entry');">日志</a> 
+        <a href="http://pp.sohu.com/xpt/Z29vZGx1Y2tfMTk4MkBzb2h1LmNvbQ==" class="navUrl" title="查看勇敢的心 的相册"  target="_blank" onmousedown="CA.q('blog_header_photo');"><img src="http://js1.pp.sohu.com.cn/ppp/blog/styles_ppp/images/ico_picture.gif" alt="相册" align="absmiddle" border="0" /></a><a href="http://pp.sohu.com/xpt/Z29vZGx1Y2tfMTk4MkBzb2h1LmNvbQ==" class="navUrl"  target="_blank" title="查看勇敢的心 的相册" onmousedown="CA.q('blog_header_photo');">相册</a> 
+        <a href="http://my.tv.sohu.com/people/Z29vZGx1Y2tfMTk4MkBzb2h1LmNvbQ==" target="_blank" class="navUrl" title="查看勇敢的心 的视频" onmousedown="CA.q('blog_header_video');"><img src="http://js1.pp.sohu.com.cn/ppp/blog/styles_ppp/images/ico_video.gif" alt="视频" align="absmiddle" border="0" /></a><a href="http://my.tv.sohu.com/people/Z29vZGx1Y2tfMTk4MkBzb2h1LmNvbQ==" target="_blank" class="navUrl" title="查看勇敢的心 的视频" onmousedown="CA.q('blog_header_video');">视频</a> 
+        <a href="http://goodluck1982.i.sohu.com/profile/index.htm" class="navUrl" title="查看勇敢的心 的个人资料" onmousedown="CA.q('blog_header_profile');"><img  border ="0" src="http://js1.pp.sohu.com.cn/ppp/blog/styles_ppp/images/ico_profile.gif" alt="资料" align="absmiddle" /></a><a href="http://goodluck1982.i.sohu.com/profile/index.htm" class="navUrl" title="查看勇敢的心 的个人资料" onmousedown="CA.q('blog_header_profile');">资料</a>
+		<a href="http://goodluck1982.blog.sohu.com/rss" target="_blank" onmousedown="CA.q('blog_header_rss');"><img src="http://js1.pp.sohu.com.cn/ppp/blog/styles_ppp/images/ico_rss.gif" alt="RSS订阅" align="absmiddle" /></a>
+		<a href="javascript:void(0)" name="onlineIcon" style="display:none" rel="" param="Z29vZGx1Y2tfMTk4MkBzb2h1LmNvbQ==;勇敢的心 "></a>
+	</div>
+	<div id="blogDesc">生活是丰富多彩的，生活又是充满挫折的，不论生活怎样，我们都要有一颗乐观的、平常的、勇敢的心！</div>
+  </div>
+</div>
+<div id="navBar">
+  <div id="innerNavBar">
+		<ul id="mainNav">
+			<li><a href="http://goodluck1982.blog.sohu.com/#tp_c3997b3792"><script type="text/javascript">document.write(getNavIco('', '首页'));</script><span>首页</span></a></li> 
+			<li><a href="http://goodluck1982.blog.sohu.com/#tp_pp"><script type="text/javascript">document.write(getNavIco('100', '相册'));</script><span>相册</span></a></li> 
+			<li><a href="http://goodluck1982.blog.sohu.com/#tp_4cdf89024b9"><script type="text/javascript">document.write(getNavIco('103', '其他'));</script><span>其他</span></a></li> 
+			<li><a href="http://goodluck1982.blog.sohu.com/#tp_dd9a1b43afa"><script type="text/javascript">document.write(getNavIco('0', '订阅1'));</script><span>订阅1</span></a></li> 
+
+		</ul>
+	<ul id="optionNav">
+	</ul>
+	<div class="clear"></div>
+  </div>
+</div>
+		<div id="mainWrapper">
+		<div id="innerMainWrapper" class="revolution">
+			<div id="articleContent">
+                <div id="articleInnerContent">
+                <div id="contentLabelBox" style="display:none">
+  					<div id="innerContentLabelBox" style="height:25px;">
+   						 <a href="http://blog.sohu.com">搜狐博客</a> 
+							&gt; <a href="http://goodluck1982.blog.sohu.com/">勇敢的心 </a>
+							&gt; <a href="http://goodluck1982.blog.sohu.com/entry/">日志</a>
+    					
+    						&gt; <a href="http://goodluck1982.blog.sohu.com/entry/1761597/">科学计算</a>
+    					
+  					</div>
+ 
+  					<div class="clear"></div>
+				</div>
+					
+					
+					
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+#sz_qz {
+    width: 100%;
+    overflow: hidden;
+    height: 18px;
+    padding: 15px 0;
+}
+#sz_qz .qz-tt {
+    color: #666;
+    float: left;
+    font-size: 12px;
+    height: 22px;
+    line-height: 22px;
+}
+#sz_qz .to {
+    margin-right: 8px;
+    float: left;
+    line-height: 18px;
+    margin-bottom: 8px;
+}
+#sz_qz .to .txt-img {
+    font-size: 12px;
+    font-style: normal;
+    background-color: #ED7B49;
+    color: #FFFFFF;
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    height: 18px;
+    line-height: 18px;
+    margin-right: 3px;
+    text-align: center;
+    width: 18px;
+}
+#sz_qz .to a {
+    color: #333;
+    font-size: 12px;
+    text-decoration: none;
+}
+#sz_qz .to a:hover {
+    color: #ed7b49;
+    text-decoration: underline;
+}
+</style>
+
+
+
+
+<script type="text/javascript">
+	var bruUrl = "http://i.sohu.com/login/logon.do?bru=http://goodluck1982.blog.sohu.com/211881268.html";
+</script>
+<div id="contentLabelBox" style="display:none">
+  <div id="innerContentLabelBox" style="height:25px;" style="display:none">
+    <a href="http://blog.sohu.com">搜狐博客</a> 
+	&gt; <a href="http://goodluck1982.blog.sohu.com/">勇敢的心 </a>
+	&gt; <a href="http://goodluck1982.blog.sohu.com/entry/">日志</a>
+    
+    &gt; <a href="http://goodluck1982.blog.sohu.com/entry/1761597/">科学计算</a>
+    
+  </div>
+ 
+  <div class="clear"></div>
+</div>
+<div class="content-top"></div>
+<div 
+ 
+class="revoWarrper profileL"
+> 
+
+
+
+
+
+
+
+
+
+
+
+<div class="revoArtLeft">
+	<div class="mod" id="m_1"><div class="modFrame"><table cellspacing="0" cellpadding="0" class="modTable"><thead><tr>
+		<td class="mheader lt"></td>
+		<td class="mheader t">
+			<div class="modHeader clearfix">
+				<div class="modIco" style=""><img src="http://js1.pp.sohu.com.cn/ppp/blog/widgets_v_100427/profile/ico_widget.gif"></div>
+				<div class="modTitle">个人资料</div>
+			</div>
+		</td><td class="mheader rt"></td></tr></thead><tbody><tr style="display: none;"><td class="mneck l"></td><td class="mneck ec"><div class="modEditCon"></div></td><td class="mneck r"></td></tr><tr><td class="mbody l"></td><td class="mbody c">
+<div class="newBlog-profile-content">
+  <div class="newBlog-profile-content-top">
+      
+      <div class="img"><img src="http://119.img.pp.sohu.com/images/blog/2007/8/30/23/0/1155192365f.jpg" alt="" /></div>
+       <div class="user-name" id="p-username"></div>
+   		
+       
+    <div class="revoBtns">
+   
+    
+	 	 <div class="btns">
+               <a  title="将 勇敢的心  加为我的跟随" href="javascript:void(0);"  class="i-addfriend"><i class="icon_profile_follow"></i></a>
+         
+    
+    &nbsp;&nbsp;&nbsp;<a target="_blank" href="http://goodluck1982.i.sohu.com/guestbook/"><i class="icon_profile_message"></i></a>
+    	 </div>
+    	
+    </div>
+    </div>
+    <div class="newBlog-profile-content-middle">
+            <p>博客年龄：7年7个月<br />
+                访问：<span id="p-visitcount">?</span>次<br />
+                文章：419篇</p>
+    </div>
+     
+    <div class="newBlog-profile-content-bom">
+            <h4>个人描述</h4>
+            <p>姓名：goodluck<br />职业：学生<br />年龄：24 <br />位置：中国，北京<br />爱好：计算机、游泳、小游戏、睡觉、音乐等<br /></p>
+        </div>
+    <div class="revoBtns03" sytle="width:100%;overflow:hidden;">
+   
+    </div>
+    <style>
+    #sideBlogStat ul{margin:0;overflow:hidden;white-space:nowrap;list-style:none;padding:0;}
+    #sideBlogStat ul li{line-height:20px;}
+    </style>
+    <!-- <div class="revoBtns02" id="sideBlogStat">
+    数据加载中
+    </div> -->
+    
+    <div class="profile_list"></div>
+    <div class="profile_content"><div style="text-align: right; display: none;"><a onmousedown="CA.q('blog_widget_profile_editIntro');" target="_blank" href="http://blog.sohu.com/manage/setting.do">修改个性介绍</a></div>
+     
+    </div></div><div style="text-align: right; display: none;" class="modSuffix"><hr><a onmousedown="CA.a('widget_share_' + (isPPLogin() ? (isMyBlog() ? 'admin' : 'blogger') : 'guest'))" href="javascript:void(0);"><img align="absmiddle" src="http://js2.pp.sohu.com.cn/ppp/images/icons/ico_share.gif">推荐给跟随</a></div></td><td class="mbody r"></td></tr></tbody><tfoot><tr><td class="mfooter lb"></td><td class="mfooter b"></td><td class="mfooter rb"></td></tr></tfoot></table></div>
+	</div>
+    
+<!--模块三-->
+
+ 
+    
+ 
+<div class="mod" id="m_3">
+  <div class="modFrame">
+    <table cellspacing="0" cellpadding="0" class="modTable">
+      <thead>
+        <tr>
+          <td class="mheader lt"></td>
+          <td class="mheader t"><div class="modHeader clearfix">
+              <div class="modIco" style=""><img src="http://js3.pp.sohu.com.cn/ppp/blog/entry/i/1_29.gif"></div>
+              <div class="modTitle">博主最新文章</div>
+            </div></td>
+          <td class="mheader rt"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mbody l"></td>
+          <td class="mbody c">
+          	<div class="modCon profile-content">
+              <ul class="revoArticleLists"  onmousedown="CA.q('blog_entry_latest_list');">
+              
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/280638488.html">香港旅游签注</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/275515863.html">[转载] 章立凡：考证&#8212;&#8212;网传&#8220;毛泽东在宪法讨论会上的讲话&#8221;疑似伪造</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/274814935.html">主机ssh访问vmware中的虚拟linux</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/274729168.html">网络打印机奇遇记之二</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/269113409.html">[转载] 2012年最热门中国研究论文50强</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/267548600.html">关于 win8 的启动</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/266140174.html">[转载] 多铁性-磁与电的珠联璧合-时与空的交叉反演</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/265377847.html">&#8220;世界最难数独&#8221;</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/260978483.html">Mathematica 后台及脚本运行</a>
+                </li>
+                
+              	<li>
+                	<a href="http://goodluck1982.blog.sohu.com/258114518.html">[转载] 英文论文投稿前的经典28个细节检查  </a>
+                </li>
+                
+              </ul>
+              <div class="revoArticlrMore"><a href="http://goodluck1982.blog.sohu.com/entry/" onmousedown="CA.q('blog_entry_lastest_list_more');" target="_blank">更多文章&gt;&gt;</a></div>
+            </div>
+            </td>
+          <td class="mbody r"></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="mfooter lb"></td>
+          <td class="mfooter b"></td>
+          <td class="mfooter rb"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!--模块四-->
+<div  onmousedown="CA.q('blog_entry_editor_list');">
+<div id=m_4 class=mod>
+<div class=modFrame>
+<table class=modTable cellSpacing=0 cellPadding=0>
+<thead>
+<tr>
+<td class="mheader lt"></td>
+<td class="mheader t">
+<div class="modHeader clearfix">
+<div class=modTitle>推荐博文</div></div></td>
+<td class="mheader rt"></td></tr></thead>
+<tbody>
+<tr>
+<td class="mbody l"></td>
+<td class="mbody c">
+<div class="modCon profile-content">
+<div class=revoArticleCom>
+<div class=artComPhoto><a href="http://xujingboblog.blog.sohu.com/282103111.html" target=_blank><img border=0 alt=日本人婚礼这样穿 src="http://i2.itc.cn/20131211/72d_00e8a0b0_a20d_dd7c_e607_56d602cf12b0_1.jpg" width=88 height=56></a><span><a href="http://xujingboblog.blog.sohu.com/282103111.html" target=_blank>日本人婚礼这样穿</a></span></div>
+<div class=artComPhoto><a href="http://gbtimes.blog.sohu.com/282075365.html" target=_blank><img border=0 alt=芬兰圣诞 src="http://i0.itc.cn/20131211/3182_681c5d0e_3bd9_202b_e77b_11ddd4d9e0f5_1.jpg" width=88 height=56 苦逼?北漂族?=""></a><span><a href="http://gbtimes.blog.sohu.com/282075365.html" target=_blank>芬兰圣诞</a></span></div></div>
+<ul class=revoArticleLists>
+<li><a href="http://doctornie.blog.sohu.com/282086125.html" target=_blank>一把手腐败谁敢来监督</a><br><a href="http://doctornie.blog.sohu.com" target=_blank>聂辉华</a></li>
+
+<li><a href="http://sunyueblog.blog.sohu.com/282105160.html" target=_blank>当地姑娘陪我逛乌克兰</a><br><a href="http://sunyueblog.blog.sohu.com/" target=_blank>孙越</a></li>
+
+<li><a href="http://duoguolivip.blog.sohu.com/282077804.html" target=_blank>英拉比撒切尔希拉里差在哪</a><br><a href="http://duoguolivip.blog.sohu.com/" target=_blank>多国丽</a></li>
+
+<li><a href="http://snowheart19.blog.sohu.com/282084093.html" target=_blank>杂粮帮助减肥的真正原因</a><br><a href="http://snowheart19.blog.sohu.com/" target=_blank>范志红</a></li>
+
+<li><a href="http://tiantangniaoer.blog.sohu.com/282088702.html" target=_blank>入口即化的台湾美味之小米猪手</a><br><a href="http://tiantangniaoer.blog.sohu.com/" target=_blank>鸟儿的清丽食界</a></li>
+
+<li><a href="http://cylmandy.blog.sohu.com/282067941.html" target=_blank>矮个MM毛衣搭配短裙潮味十足</a><br><a href="http://cylmandy.blog.sohu.com/" target=_blank>兰哥</a></li>
+</ul>
+
+<div class=revoArticlrMore><a href="http://blog.sohu.com/" target=_blank>更多相关文章&gt;&gt;</a></div></div></td>
+<td class="mbody r"></td></tr></tbody>
+<tfoot>
+<tr>
+<td class="mfooter lb"></td>
+<td class="mfooter b"></td>
+<td class="mfooter rb"></td></tr></tfoot></table></div></div>
+</div>
+<!--Ads模块-->
+<div  onmousedown="CA.q('blog_entry_left_ads');">
+
+</div>
+</div>
+
+
+<div class="revoArtRight">
+    <div class="mod">
+    <div class="modFrame">
+    <table cellspacing="0" cellpadding="0" class="modTable">
+     <thead>
+                <tr>
+                  <td class="mheader lt"></td>
+                  <td class="mheader t"><div class="modHeader clearfix">
+                      <div style="" class="modIco"><img src="http://js5.pp.sohu.com.cn/ppp/blog/widgets_v_100427/entries/ico_widget.gif"></div>
+                      <div class="modTitle">日志正文</div>
+                    </div></td>
+                  <td class="mheader rt"></td>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <tr style="display: none;">
+                  <td class="mneck l"></td>
+                  <td class="mneck ec"><div class="modEditCon"></div></td>
+                  <td class="mneck r"></td>
+                </tr>
+                <tr>
+                <td class="mbody l"></td>
+                  <td class="mbody c">
+                  <div class="modCon profile-content">
+<div class="item">
+  <div class="item-top"></div>
+  <div id="entry">
+              
+              
+    <div class="item-body">
+        <div class="newBlog-title" data-entryid="211881268">
+      <h2>
+		<span>NetCDF 读取数据时诡异的 map</span>
+        
+      </h2>
+      
+      
+      <div class="newBlog-title-sort">
+            分类：<a href="http://goodluck1982.blog.sohu.com/entry/1761597/">科学计算</a> | 标签：
+        <a href="http://tag.blog.sohu.com/netcdf/" target="_blank">netcdf</a>&nbsp;
+        
+      </div>
+     
+      <div class="newBlog-top-opration">
+            <span class="date">2012-04-16 19:05</span>
+            阅读(<span class="itemReadCount">?</span>)<a href="#commentForm">评论(<span class="discusscount">0</span>)</a><span style="display:none" class="opr"><a href="http://blog.sohu.com/manage/entry.do?m=edit&id=211881268&t=shortcut" target="_blank">编辑</a><a data-act="deleteEntry" href="javascript:void 0">删除</a></span>
+      </div>
+    </div>
+      
+      <div class="item-content" id="main-content"> <div style="line-height:160%;font-size:14px;">以下为 NetCDF 的安装信息<br />$nc-config --all<br />This netCDF 4.1.1 has been built with the following features: <br />&nbsp; --cc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; icc<br />&nbsp; --cflags&nbsp;&nbsp;&nbsp; -&gt;&nbsp; -I/usr/local/include<br />&nbsp; --libs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; -L/usr/local/lib -lnetcdf<br />&nbsp; --cxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; icpc<br />&nbsp; --has-c++&nbsp;&nbsp; -&gt; yes<br />&nbsp; --fc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; ifort<br />&nbsp; --fflags&nbsp;&nbsp;&nbsp; -&gt; -g -I/usr/local/include<br />&nbsp; --flibs&nbsp;&nbsp;&nbsp;&nbsp; -&gt; -L/usr/local/lib -lnetcdff -lnetcdf<br />&nbsp; --has-f77&nbsp;&nbsp; -&gt; yes<br />&nbsp; --has-f90&nbsp;&nbsp; -&gt; yes<br />&nbsp; --has-dap&nbsp;&nbsp; -&gt; no<br />&nbsp; --has-nc2&nbsp;&nbsp; -&gt; yes<br />&nbsp; --has-nc4&nbsp;&nbsp; -&gt; no<br />&nbsp; --has-hdf5&nbsp; -&gt; no<br />&nbsp; --has-hdf4&nbsp; -&gt; no<br />&nbsp; --has-szlib -&gt; no<br />&nbsp; --prefix&nbsp;&nbsp;&nbsp; -&gt; /usr/local<br />&nbsp; --includedir-&gt; /usr/local/include<br />&nbsp; --version&nbsp;&nbsp; -&gt; netCDF 4.1.1<br /><br /><br />CDL文件 foo 内容：<br />netcdf foo {<br />dimensions:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D1 = 4 ;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D2 = 6 ;<br />variables:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rh(D1, D2) ;<br />data:<br />&nbsp;rh =<br />&nbsp; 1, 2, 3, 4, 5, 6,<br />&nbsp; 7, 8, 9, 10, 11, 12,<br />&nbsp; 13, 14 ,15 ,16, 17 ,18,<br />&nbsp; 19, 20, 21, 22, 23, 24 ;<br />}<br /><br />ncgen foo 生成 foo.nc 文件，可见数据只有一个 <span style="font-weight: bold;">4行6列</span> 的二维数组。然而用 f90 编程查看该文件时，得到的数组 rh 的信息却是 <span style="font-weight: bold;">6行4列</span> 的！如下：<br />&nbsp;nDimensions, nVariables, nAttributes,unlimitedDimId, formatNum:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1<br />&nbsp;<br />DimID&nbsp;&nbsp;&nbsp; 1: len=[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4], name=[D1]<br />DimID&nbsp;&nbsp;&nbsp; 2: len=[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6], name=[D2]<br />&nbsp;<br />VarID&nbsp;&nbsp;&nbsp; 1: xtype=[int&nbsp;&nbsp; ],&nbsp; name=[rh],&nbsp;&nbsp; Dim(id)=[6(2),4(1)]<br /><br />按照手册 netcdf_f90.pdf 中6.9节的倒数第二个例子，说&ldquo;Here is an example of using nf90 get var to read a netCDF variable named rh whose dimensions are the transpose of the Fortran 90 array:&rdquo;，似乎是能将数据转置后读出，但尝试失败！<br /><br /><span style="font-family: Courier New;">program main</span><br /><span style="font-family: Courier New;">use netcdf</span><br /><span style="font-family: Courier New;">implicit none</span><br /><span style="font-family: Courier New;">integer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :: ncId, rhVarId, status</span><br /><span style="font-family: Courier New;">integer, parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :: numLons = 6, numLats = 4</span><br /><span style="font-family: Courier New;">integer, dimension(numLons, numLats) :: rhValues</span><br /><span style="font-family: Courier New;">! netCDF variable has dimensions (numLats, numLons)</span><br /><br /><span style="font-family: Courier New;">status = nf90_open(&quot;foo.nc&quot;, nf90_NoWrite, ncid)</span><br /><span style="font-family: Courier New;">if(status /= nf90_NoErr) call handle_err(status)</span><br /><br /><span style="font-family: Courier New;">status = nf90_inq_varid(ncid, &quot;rh&quot;, rhVarId)</span><br /><span style="font-family: Courier New;">if(status /= nf90_NoErr) call handle_err(status)</span><br /><br /><span style="font-family: Courier New;">! Read transposed values: map vector would be (/ 1, numLats /) for</span><br /><span style="font-family: Courier New;">!&nbsp;&nbsp; no transposition</span><br /><span style="font-family: Courier New;">status = <span style="font-weight: bold;">nf90_get_var(ncid, rhVarId,rhValues, map = (/ numLons, 1 /)) !即(/6,1/)</span></span><span style="font-family: Courier New; font-weight: bold;"></span><br /><span style="font-family: Courier New;">if(status /= nf90_NoErr) call handle_err(status)</span><br /><span style="font-family: Courier New;">print *, rhValues(1,:)</span><br /><span style="font-family: Courier New;">print *, rhValues(2,:)</span><br /><span style="font-family: Courier New;">print *, rhValues(3,:)</span><br /><span style="font-family: Courier New;">print *, rhValues(4,:)</span><br /><span style="font-family: Courier New;">print *, rhValues(5,:)</span><br /><span style="font-family: Courier New;">print *, rhValues(6,:)</span><br /><span style="font-family: Courier New;"><br />contains&nbsp; !------------------------------------------</span><br /><span style="font-family: Courier New;">subroutine handle_err(stat)</span><br /><span style="font-family: Courier New;">integer, intent (in) :: stat</span><br /><span style="font-family: Courier New;">if(stat /= NF90_NOERR) then</span><br /><span style="font-family: Courier New;">&nbsp; write(0,*), trim(NF90_STRERROR(stat))</span><br /><span style="font-family: Courier New;">&nbsp; stop &quot;Stopped&quot;</span><br /><span style="font-family: Courier New;">end if</span><br /><span style="font-family: Courier New;">end subroutine handle_err</span><br /><span style="font-family: Courier New;">end </span><br /><br />以上代码主体部分就是从手册上拷过来的，但是输出结果为：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 16<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 22<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp; 1948748609 -1751098240 -1751097824<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11077&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32767&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 32767<br />段错误<br /><br />如果将上面读取语句改为：<br /><span style="font-family: Courier New;"><span style="font-weight: bold;">nf90_get_var(ncid, rhVarId,rhValues)&nbsp; ! 或 map=(/1,6/)，即默认值</span></span><span style="font-family: Courier New; font-weight: bold;"></span><br />那么结果倒是正确，只不过是 nc 中数据的转置<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 19<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 21<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 22<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 23<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24<br /><br /><br />如果将上面读取语句改为：<br />
+<span style="font-family: Courier New;"><span style="font-weight: bold;">nf90_get_var(ncid, rhVarId, rhValues, map=(/4,1/) )</span></span><br />则输出为<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 17<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 23<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 18<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24<br /><br />开始想，把 rhValues 定义成 rhValues(4,6) 不就行了吗？但由于 f90 从 nc 文件里的到的信息是 rh 数组是 6 行 4 列的，所以对 rhValues 定义时也必须是 6 行 4 列的，否则在读取语句是提示错误：<br />&nbsp;NetCDF: Start+count exceeds dimension bound<br /><br />所以：<br /><br /><span style="color: rgb(0, 0, 255); font-weight: bold;">(1).&nbsp; ncdump 查看 nc 文件得到的数组的维数与 f90 从 nc 文件里得到的维数正好相反！比如 ncdump 告诉你某个数组 a 维数是 a(N1,N2,N3)，那么同样文件在 f90 读来，得到的 a 的数组却是 a(N3,N2,N1)。</span><br /><br /><span style="color: rgb(0, 0, 255); font-weight: bold;">(2).&nbsp; 定义数组来读取 a 时，也必须按 N3, N2, N1 这样来定义才行，否则执行时出错。</span><br /><br /><span style="color: rgb(0, 0, 255); font-weight: bold;">(3).&nbsp; 那个 map 参数没搞懂怎么用，还是取默认值吧</span><br /><br /><br /></div>
+		
+
+	<div class="clear"></div>
+	 <div class="newBlog-bom" data-entryid="211881268">
+        <div class="newBlog-bom-opration">
+	<!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+<span class="bds_more" style="padding-top:4px;">分享到：</span>
+<a class="bds_isohu" style="margin-left:0px;"></a>
+<a class="bds_tsina" style="margin-left:0px;" ></a>
+<a class="bds_qzone" style="margin-left:0px;" ></a>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=0" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+          &nbsp;&nbsp;   阅读(<span class="itemReadCount">?</span>)<a href="#commentForm">评论(<span class="discusscount">0</span>)</a><span style="display:none" class="opr"><a href="http://blog.sohu.com/manage/entry.do?m=edit&id=211881268&t=shortcut" target="_blank">编辑</a><a data-act="deleteEntry" href="javascript:void 0">删除</a></span>
+        </div>
+        <div class="newBlog-bom-pn">
+            <span class="bom-p">上一篇：<a onmousedown="CA.q('blog_entryview_previous');" href="http://goodluck1982.blog.sohu.com/213049050.html"> Mathematica 读写 NetCDF 文件</a>  </span>
+            <span class="bom-n">下一篇：<a onmousedown="CA.q('blog_entryview_next');" href="http://goodluck1982.blog.sohu.com/211543565.html">[转载] 集群维护工具 ClusterShell </a></span>
+        </div>
+   	</div>
+   	<div id="sz_qz"></div>
+       <div class="clear"></div>
+      </div>
+      
+    </div>
+
+    <div id="folder0_f" style="display:none;" class="item-infoBox"><span class="item-infoBoxTit"><strong>提示：</strong>“固定链接”为您显示此篇文章的固定不变链接，如果您有还有疑问<a href="/help.html">请点击帮助</a></span><br />
+      链接地址：<a target="_blank" href="http://goodluck1982.blog.sohu.com/211881268.html">http://goodluck1982.blog.sohu.com/211881268.html</a> <a href="javascript:var url=window.clipboardData.setData('text','http://goodluck1982.blog.sohu.com/211881268.html');alert('地址已保存到剪切板。');">复制此地址</a><br />
+    </div>
+  </div>
+  <div class="blog-article-ad-wrapper"></div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <div id="entrycommentlist">
+    <div id="messageWrapper"></div>
+    <div class="item-title">
+      <h3>评论&nbsp;&nbsp;&nbsp;<img align="absmiddle" class="icon" src="http://js2.pp.sohu.com.cn/ppp/images/icons/ico_question.gif"/>&nbsp;&nbsp;<a href=" http://admin.blog.sohu.com/85634919.html" target=”_blank” style="font-weight: normal;"  onmousedown="CA.a('entry_commemt_first');">想第一时间抢沙发么？</a></h3>
+      <div class="clear"></div>
+    </div>
+    
+   <!-- jsp:include page="/inc/home/bloghome/ad_bai.inc"/ -->
+
+    <div id="commentlist"></div>
+    <div class="item-info">
+      <div id="pageText"></div>
+    </div>
+
+  </div>
+  <div id="tipBoxDiv"></div>
+  <script type="text/javascript">
+var entryId = '211881268';
+var blogId = '564459';
+
+var pageTextContainer = $('pageText');
+var curPage = 1;
+var itemPerPage = 20;
+var startPage = 1;
+var totalCount = 0;
+var chagePageAction = 'chagePage';
+var noCache = location.href.indexOf('?') > 0;
+chagePage();
+</script>
+  <div id="errormsgWrapper"></div>
+  <div>
+    
+    
+      
+
+<a name="commentbox" id="commentbox"></a>
+<div class="info-content" id="commentForm">
+  <form name="commentForm" method="post" action="/page/comment.do">
+    <input type="hidden" name="entryId" value="211881268" />
+    <input type="hidden" name="blogId" value="564459" />
+	<input type="hidden" name="replytopassport"/>
+	<input type="hidden" name="replytodiscussid"/>
+    <table width="100%" border="0" cellspacing="2" cellpadding="0">
+	  <tr>
+	  	<td>&nbsp;</td>
+		<td height="30" valign="bottom">
+		
+		</td>
+	  </tr>
+      <tr>
+        <td valign="top" style="width: 65px;"><label for="commentContent">评论内容:</label></td>
+        <td><textarea id="commentContent" name="commentContent" class="text" style="width:330px;height:140px;float:left;"></textarea>
+		</div></td>
+      </tr>
+	  <tr>
+        <td valign="top">表　　情:</td>
+        <td>
+<script type="text/javascript">
+document.write('<scr'+'ipt type="text/javascript" src="'+ HMP + 'emote.js"></scr'+'ipt>');
+</script>
+<div id="emotionBox">
+加载中...
+</div>
+<script type="text/javascript">
+var commentContentEl = null;
+function addEmote(ubb) {
+	if (!commentContentEl) commentContentEl = $('commentContent');
+	commentContentEl.value += ' ' + ubb; 
+	commentContentEl.focus();
+}
+Emote.init({parent: 'emotionBox', callback: addEmote, stat: 'reply'});
+</script>
+        </td>
+	  </tr>
+      <tr>
+        <td class="redfont" id="c_codeTextBox"></td>
+        <td id="c_codeInputBox"></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>
+        <input type="hidden" name="m" value="save" />
+    	<input type="button" id="commentSubmit" value="发 表" class="button-submit" onclick="checkCForm()"/>
+    	<p style="line-height:20px;color:#666">请各位遵纪守法并注意语言文明</p>
+		 </td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<script type="text/javascript">
+var commentPermission = '2';
+setCPShow();
+
+</script>
+    
+    
+  </div>
+  <div class="item-bottom"></div>
+</div>
+</div>
+</td>
+ <td class="mbody r"></td>
+</tr>
+</tbody>
+ <tfoot>
+        <tr>
+          <td class="mfooter lb"></td>
+          <td class="mfooter b"></td>
+          <td class="mfooter rb"></td>
+        </tr>
+</tfoot>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="content-bottom"></div>
+<script type="text/javascript">
+var isblanked = true;
+var hidimg = "http://119.img.pp.sohu.com/images/blog/2007/8/30/23/0/1155192365f.jpg";
+var nick = "勇敢的心1982";
+var showurl = "http://goodluck1982.i.sohu.com";
+var tags = '';
+
+tags = 'netcdf';
+
+</script>
+<script src="http://js3.pp.sohu.com.cn/ppp/blog/js_ppp/view.v2013102517.js" charset="utf-8"></script>
+<!DOCTYPE html> <!-- Le styles --> <style> *html .fixed-bottom {position:absolute;bottom:auto;top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-parseInt(this.currentStyle.bottom)));}  #popup{ position:fixed; _position:absolute; display:none; } </style> <link rel="stylesheet" href="http://js2.pp.sohu.com.cn/cn2012/blog-poping/style/style.css"><div id=popup> <div class=pop-wrapper> <div class=title> <div class=close><a id=closepopup onmousedown="CA.q('popup_close')" href="javascript:void(0)"><i class=icon-close></i></a></div> <h4></h4></div> <div class=con> <div class=photo><span class=bg></span><a class=xg href="http://lifestyle.blog.sohu.com/282116656.html" target=_blank>晒出圣诞着装 赢丰厚大礼</a><a href="http://lifestyle.blog.sohu.com/282116656.html" target=_blank><img alt="晒出圣诞着装 赢丰厚大礼" src="http://i1.itc.cn/20131219/2dcf_91469e05_8445_496a_1fc2_55abe9cb973e_1.jpg"></a> </div> <div class=txt> <div class=info> <h3><a href="http://lifestyle.blog.sohu.com/282116656.html" target=_blank><font color=red>“晒出圣诞着装 赢丰厚大礼”</font></a></h3> <p><a class=more href="http://lifestyle.blog.sohu.com/282116656.html" target=_blank>圣诞节即将驾到，你用什么来给自己增加一些节日气氛呢？</a></p></div> <div class=list> <ul> <li><a href="http://vivienne198496.blog.sohu.com/282335547.html" target=_blank>大笑笑：回忆中的圣诞气息</a></li>  <li><a href="http://evolutivo.blog.sohu.com/282311583.html" target=_blank>付佳减乘除：圣诞让冬天美丽</a></li>  <li><a href="http://killualq.blog.sohu.com/282152037.html" target=_blank>killualq：圣诞预热元气搭</a></li>  <li><a href="http://ruoxuepatty.blog.sohu.com/282182261.html" target=_blank>Patty:红色是绝对的圣诞色</a></li>  <li><a href="http://miaomiaoxixue.blog.sohu.com/282244433.html" target=_blank>李喵喵：圣诞节要甜美可爱</a></li> </ul> </div></div></div></div></div><script> function wmh_linkClick() { var stat = new Image; stat.src = "http://pv.mini.sohu.com/blog.gif?t=" + new Date().getTime(); } </script>  <script type="text/javascript" src="http://js2.pp.sohu.com.cn/ppp/bms/bms.popup.v.6.js"></script> <script> var popupAd = new bms.popup(); popupAd.init('popup','closepopup',false,120,function(){CA.q('popup_show')}); setTimeout(popupAd.popupAd,2000);  //window.onload=function(){setTimeout(popupAd.popupAd,500)}; </script> <script type="text/javascript"> (function(){ $(function(){ $('#popup .action i.btn-draw').hover(function(){ $(this).addClass('btn-draw-hover'); },function(){ $(this).removeClass('btn-draw-hover'); });  $('#popup .action i.btn-exchange').hover(function(){ $(this).addClass('btn-exchange-hover'); },function(){ $(this).removeClass('btn-exchange-hover'); });   }); })(jQuery)  </script>   
+
+
+                </div>
+            </div>
+			<div class="clear"></div>
+		</div>
+		</div>
+		
+<div id="footer">
+  <div id="innerFooter">
+	<div id="contact"> <a href="http://blog.sohu.com/help.html" target="_blank" rel="nofollow">帮助</a> - <a href="http://sohucallcenter.blog.sohu.com/" target="_blank" rel="nofollow">客服中心</a> - <a href="http://q.sohu.com/group/23063" target="_blank" rel="nofollow">意见建议</a> - <a href="mailto:jubao@contact.sohu.com">举报</a> - <a href="http://blog.sohu.com" target="_blank">搜狐博客</a> - <a href="http://www.sohu.com" target="_blank">搜狐首页</a> - <a href="http://blog.sohu.com/roll/" target="_blank">全部博文</a> - <a href="http://roll.sohu.com" target="_blank">新闻</a>
+<script type="text/javascript">
+function writeReport() {
+	if (typeof entryId == 'undefined' || !entryId) return;
+	var url = 'http://act.blog.sohu.com/plus/impeach.jsp?rp='+escape(location.href)+'&p='+escape(getP());
+	var str = '';
+	str += ' | <a href="'+ url +'" target="_blank"  rel="nofollow">举报不良信息</a>';
+	document.write(str);
+}
+writeReport();
+</script>
+	</div>
+	<div id="copyright">Copyright &copy; 2013 Sohu.com Inc. All rights reserved. 搜狐公司 版权所有 </div>
+  </div>
+</div>
+<script src="http://js.sohu.com/mail/pv/pv_v206.js" type="text/javascript"></script>
+
+
+<!-- sohu im -->
+
+<!-- sohu im end -->
+<script language="javascript">
+var  _wratingId = '860010-0601020100';
+if(_wratingId !=null){
+document.write('<scr'+'ipt type="text/javascript" src="http://js.sohu.com/a1.js"></scr'+'ipt>');
+}
+</script>
+<script language="javascript">
+if(_wratingId !=null){
+document.write('<scr'+'ipt type="text/javascript">');
+document.write('var vjAcc="'+_wratingId+'";');
+document.write('var wrUrl="http://sohu.wrating.com/";');
+document.write('try{vjTrack();}catch(e){}');
+document.write('</scr'+'ipt>');
+}
+</script>
+<script type="text/ecmascript">
+function checkLogonUserCount() {
+	if (getCookie('lastdomain') && getCookie('lastdomain') != '') {
+		var _lastdomain = getCookie('lastdomain').split('|')[1];
+		if (_lastdomain) {
+			var _url = 'http://bgt.blog.sohu.com/blogping.gif?sohupp='+ _lastdomain;
+			_url += '&refer='+ escape(document.referrer);
+			_url += '&c='+ timeStamp();
+			if (isLogin()) {
+				_url += '&logon='+ getXP();
+			}
+			document.write('<img src="'+ _url +'" />');
+		}
+	}
+}
+checkLogonUserCount();
+</script>
+
+	</div>
+</div>
+<script type="text/javascript">
+Starter.start();
+</script>
+
+<script type="text/javascript">
+document.write('<scr'+'ipt type="text/javascript" src="'+SP+'counter.js"></scr'+'ipt>');
+</script>
+
+
+<script type="text/javascript">
+if($('errormsgWrapper')){
+	var err = Info.readInfo(true);
+	if(err){
+		var str = '<div id="errormsg" style="background-color: #ffffe1; border: 2px solid #ccc; color: red; padding: 10px; padding-left: 30px; margin: 20px; background-image:url(http://js.pp.sohu.com/ppp/blog/styles/images/ico_error.gif); background-position: 7px 10px; background-repeat: no-repeat;">';
+		str += err;
+		str += '</div>';
+		$('errormsgWrapper').innerHTML = str;
+		try{flashErr('errormsg');}catch(e){}
+	}
+}
+if($('messageWrapper')){
+	var msg = Info.readInfo(false);
+	if(msg){
+		var str = '<div id="message" style="background-color: #ffffe1; color: 6D6D6D; border: 2px solid #ccc; padding: 10px; padding-left: 30px; margin: 20px; background-image:url(http://js.pp.sohu.com/ppp/blog/styles/images/ico_ok.gif); background-position: 7px 10px; background-repeat: no-repeat;">';
+		str += msg;
+		str += '</div>';
+		$('messageWrapper').innerHTML = str;
+		try{flashMsg('message');}catch(e){}
+	}
+}
+</script>
+
+<script type="text/javascript" charset="utf-8" src="http://s.suc.itc.cn/loader.action?key=ppdialog"></script>
+
+</body>
+</html>

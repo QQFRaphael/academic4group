@@ -1,0 +1,345 @@
+\documentclass[14pt]{beamer}
+\useoutertheme{default}
+
+% Alternative design for title
+%\setbeamercolor{frametitle}{fg=red}
+%\setbeamerfont{frametitle}{series=\bfseries}
+%\setbeamertemplate{frametitle}
+%{
+%\begin{centering}
+%\insertframetitle\par
+%\end{centering}
+%}
+\usepackage{graphicx}
+\usepackage{exscale}
+\usepackage{colortbl}
+\usepackage{relsize}
+\setbeamercolor{titlelike}{fg=white,bg=cyan}
+%\setbeamercolor{normal text}{fg=white,bg=black}
+% I use Palatino for all text
+\usefonttheme{serif}
+\usepackage{mathpazo} % math & rm
+\linespread{1.1}        % Palatino needs more leading (space between lines)
+\normalfont
+\usepackage[T1]{fontenc}
+% One could use the concrete fonts by Knuth
+%\usepackage{concmath}
+%\usepackage{eulervm}
+% For larger spacing of table rows
+\renewcommand{\arraystretch}{1.5}
+% \setbeamercolor{background canvas}{bg=magenta!10}
+\setbeamertemplate{itemize items}[square]
+\setbeamercolor{itemize item}{fg=gray}
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{galaxy1}}
+% To change margins for all slides
+%\setbeamersize{text margin left=0.5cm,text margin right=0.5cm}
+% To change margin on one slide only
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
+% More typesetting environments and options for mathematics
+% \usepackage{amsmath}
+% Fancy fonts for mathematics
+% \usepackage{amsfonts}
+\title{Convective Parameterization}
+\author{Qifeng Qian}
+\institute{CESS, Tsinghua University}
+\date{\today}
+
+\begin{document}
+% TODO
+% Separately mark 2HDM and singlet terms
+% More citations
+%
+\frame[plain]{\titlepage
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item \textbf{Convective Cloud}
+\item Convective Parameterization
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Cloud}
+\includegraphics[width=\columnwidth]{./fig01.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Cloud}
+\centering{Life cycle of convection}
+\includegraphics[width=\columnwidth]{./fig02.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Cloud}
+\centering{Structure of mesoscale convective system}
+\includegraphics[width=\columnwidth]{./fig03.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Cloud}
+Convective Available Potential Energy (CAPE) is frequently used to measure the atmospheric instability.\par
+\centering{$CAPE=\mathlarger{\int}_{init}^{lnb}g\dfrac{T_{vp}-T_{ve}}{T_{ve}}dz$}
+\includegraphics[width=.6\textwidth]{./fig04.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Convective Cloud
+\item \textbf{Convective Parameterization}
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\includegraphics[width=\textwidth]{./fig05.png}\newline
+$s=c_pT+gz$ is the static energy, $q$ is specific humidity, $Q_R$ is radiative heating
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\includegraphics[width=.4\textwidth]{./fig06.png}\par
+\includegraphics[width=.7\textwidth]{./fig07.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\begin{column}{0.4\textwidth}
+\includegraphics[width=\columnwidth]{./fig08.png}
+\end{column}
+\begin{column}{0.6\textwidth}
+\begin{itemize}
+\item $Q_1$ is called the apparent heat source
+\item $Q_2$ is called the apparent moisture sink
+\item $Q_3$ is called the apparent momentum source
+\end{itemize}
+\end{column}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+If we introduce the moist static energy: $h=s+L_vq$ then we can have :
+\includegraphics[width=.5\textwidth]{./fig09.png}\par
+where only the transport term remains.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+Integrating over the vertical between the surface and the top of the atmosphere can be done easily as the flux divergences represent perfect differentials. This leads to the following important budget constraints:
+\includegraphics[width=\textwidth]{./fig10.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\begin{itemize}
+\item column integrated heat can only be changed through radiation, surface sensible heat flux, and precipitation
+\item column integrated water vapor can only change through removal by surface precipitation and input by surface moisture flux
+\item total momentum is only changed through surface friction (an external force), therefore convective transport conserves momentum
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\includegraphics[width=.8\textwidth]{./fig13.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\item Deep Convection
+\includegraphics[width=.9\textwidth]{./fig11.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\item Shallow Convection
+\includegraphics[width=.6\textwidth]{./fig12.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\item Condensation and Transport
+\includegraphics[width=\textwidth]{./fig14.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\centering{Aims of convective parameterization}
+\begin{itemize}
+\item Determine the occurance and localisation of convection
+\item Determine the vertical distribution of heating, moistening and momentum changes (with the help of cloud model)
+\item Determine the overall amount of convective precipitation and energy conversion (closure)
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\centering{Types of convection schemes}
+\begin{itemize}
+\item Schemes based on moisture budget
+\begin{itemize}
+\item Kuo
+\end{itemize}
+\item Adujstment schemes
+\begin{itemize}
+\item moist convective adjustment
+\item penetrative adjustment scheme : BM, BMJ
+\end{itemize}
+\item Mass flux schemes(bulk+spectral)
+\begin{itemize}
+\item multiple plumes, spectral model: AS
+\item single entraining/detraining plume (bulk model): KF, Tiedtke, Bechtold
+\item episodic mixing: Emanuel
+\end{itemize}
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\centering{Kuo Scheme}
+\begin{itemize}
+\item This is the first convective parameteriztion
+\item Closure assumption: precipitation is linked with large scale moisture convergence
+\item Problem: convection consumes water, instead of consuming potential energy
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\centering{Betts-Miller Scheme}
+\begin{itemize}
+\item This is the an adjustment scheme
+\item Adjust the temperature profile and humidity profile simultaneously in order to conserve enthalpy
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\centering{Mass flux scheme}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\begin{column}{0.4\textwidth}
+\includegraphics[width=\columnwidth]{./fig15.png}
+\end{column}
+\begin{column}{0.6\textwidth}
+\includegraphics[width=.8\columnwidth]{./fig16.png}\par
+\includegraphics[width=\columnwidth]{./fig17.png}\par
+\includegraphics[width=.4\columnwidth]{./fig18.png}\par
+\includegraphics[width=\columnwidth]{./fig19.png}\par
+\includegraphics[width=.6\columnwidth]{./fig20.png}\par
+\includegraphics[width=\columnwidth]{./fig21.png}\par
+\includegraphics[width=\columnwidth]{./fig22.png}\par
+\end{column}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\begin{column}{0.4\textwidth}
+\includegraphics[width=\columnwidth]{./fig15.png}
+\end{column}
+\begin{column}{0.6\textwidth}
+\includegraphics[width=\columnwidth]{./fig23.png}\par
+\includegraphics[width=.5\columnwidth]{./fig24.png}\par
+\includegraphics[width=.5\columnwidth]{./fig25.png}\par
+\end{column}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\includegraphics[width=.5\textwidth]{./fig26.png}\par
+This requires, as usual, a cloud model and a closure to determine the absolute (scaled) value of the mass flux.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\columnwidth]{./fig27.png}
+\end{column}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\columnwidth]{./fig28.png}\par
+\end{column}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\includegraphics[width=\textwidth]{./fig29.png}\par
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\includegraphics[width=.7\textwidth]{./fig30.png}\par
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\includegraphics[width=.5\textwidth]{./fig31.png}\par
+\begin{itemize}
+\item Heating through compensating subsidence between cumulus elements (term 1) - this was already recognized by Bjerknes (1938)
+\item The detrainment of cloud air into the environment (term 2)
+\item Evaporation of cloud and precipitation (term 3)
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\centering{Convective Closure}\par
+The cloud model determines the vertical structure of convective heating and moistening (microphysics, variation of mass flux with height, entrainment/detrainment assumptions). The determination of the overall magnitude of the heating (i.e., surface precipitation in deep convection) requires the determination of the mass flux at cloud base. This is called the closure problem.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\begin{itemize}
+\item Deep convective closure: CAPE
+\begin{itemize}
+\item Prominent closure types for deep convection assume an equilibrium that establishes over a typical time scale of one hour between the production of CAPE (or cloud work function) by the large-scale, and its consumption by the convection. 
+\end{itemize}
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\begin{itemize}
+\item Shallow convective closures
+\begin{itemize}
+\item CAPE adjustment for shallow convection, but with a longer adjustment time-scale of typically three hours.
+\item Grant (2001) developed a simple equilibrium closure, where the cloud base convective mass flux is proportional to the product of the updraught fraction $a$ and a convective scale velocity $w^{*}$, the latter being proportional to the boundary-layer or cloud base height $z_{PBL}$ and the surface sensible heat flux
+\end{itemize}
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{What's next}
+\begin{tabular}{*{4}c}\hline
+\small{microphysics}  &  \small{convective}  &  \small{PBL}  &  \small{radiation}\\\hline
+\small{WDM6}             &  \small{KF}                 &  \small{YSU}                &  \small{CAM}\\
+\small{Morrison}         &  \small{KF}                 &  \small{YSU}             &  \small{CAM}\\
+\small{Thompson}      &  \small{KF}                 & \small{YSU}             & \small{CAM} \\
+\small{WDM6}            & \small{Tiedtke}          & \small{YSU}             &  \small{CAM}\\\hline
+\end{tabular}
+\small{Using COSP to evaluate the simulation of cloud}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{What's next}
+\includegraphics[width=\textwidth]{./fig32.png}\par
+\small{Time: 2007-2011}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Convective Parameterization}
+\centering{Thanks}\par
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

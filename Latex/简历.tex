@@ -1,0 +1,129 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[10pt,a4paper,sans]{moderncv} % Font sizes: 10, 11, or 12; paper sizes: a4paper, letterpaper, a5paper, legalpaper, executivepaper or landscape; font families: sans or roman
+
+\moderncvstyle{classic} % CV theme - options include: 'casual' (default), 'classic', 'oldstyle' and 'banking'
+\moderncvcolor{blue} % CV color - options include: 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{xeCJK}
+
+\usepackage[scale=0.85]{geometry} % Reduce document margins
+%\setlength{\hintscolumnwidth}{3cm} % Uncomment to change the width of the dates column
+%\setlength{\makecvtitlenamewidth}{10cm} % For the 'classic' style, uncomment to adjust the width of the space allocated to your name
+
+%----------------------------------------------------------------------------------------
+%	NAME AND CONTACT INFORMATION SECTION
+%----------------------------------------------------------------------------------------
+
+\firstname{钱奇峰} % Your first name
+\familyname{} % Your last name
+
+% All information in this block is optional, comment out any lines you don't need
+%\title{Curriculum Vitae}
+\address{浙江大学玉泉校区第六教学楼403办公室}{杭州, 浙江 310063}
+\mobile{(+86) 18558231675}
+%\phone{(000) 111 1112}
+%\fax{(000) 111 1113}
+\email{qqf1403321992@gmail.com/1403321992@qq.com}
+%\homepage{staff.org.edu/~jsmith}{staff.org.edu/$\sim$jsmith} % The first argument is %the url for the clickable link, the second argument is the url displayed in the %template - this allows special characters to be displayed such as the tilde in this %example
+%\extrainfo{additional information}
+%\photo[70pt][0.4pt]{./pic.pdf} % The first bracket is the picture height, the second is %the thickness of the frame around the picture (0pt for no frame)
+
+%\quote{Seeking a Job Opportunity or a PhD Placement by the 10th of September - 23 years old}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\makecvtitle % Print the CV title
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Education}
+
+\cventry{2021}{理学博士学位}{遥感与地理信息系统专业}{浙江大学地科学院}{}{}  % Arguments not required can be left empty
+
+\cventry{2018}{理学硕士学位}{大气科学专业}{清华大学地球系统科学系}{}{}
+\cventry{2014}{理学学士学位}{大气科学专业}{南京信息工程大学大气科学学院}{}{}
+
+
+%----------------------------------------------------------------------------------------
+%	WORK EXPERIENCE SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Experience}
+
+\cventry{2017.09--2017.12}{产品经理}{汉迪世纪科技有限公司}{北京}{}{参与公司广告平台的研发，主要负责系统业务逻辑设计、界面设计与实现}
+
+\cventry{2016.09--2017.05}{算法工程师}{彩云天气}{北京}{}{利用卷积神经网络改进了公司原有的预报系统，设计了API能够对外提供数据服务}
+
+\cventry{2015.09--2016.06}{系研究生团委副书记、党支部书记}{清华大学地球系统科学系}{北京}{}{}
+
+\cventry{2014.08--2018.01}{研究助理}{清华大学地球系统科学系}{北京}{}{}
+
+\cventry{2014.09--2015.06}{研究生会后勤部干事}{清华大学地球系统科学系}{北京}{}{}
+
+\cventry{2013.06--2013.09}{天气预报实习}{南京市气象局}{南京}{}{}
+
+\cventry{2010.06--2011.06}{生命科学协会干事}{南京信息工程大学}{南京}{}{}
+
+
+%----------------------------------------------------------------------------------------
+%	COMPUTER SKILLS SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Computer Skills}
+
+\cvitem{办公软件}{Microsoft Office, Axure, iWorks}
+\cvitem{气象研究}{Latex, NCL, Fortran, WRF/WRFDA, CESM, MPAS, LBM, ARPS, CDO, NCO}
+\cvitem{编程语言}{C/C++, Java, Python, Shell, Perl, MPI, Docker, git, sed, awk...}
+
+
+%----------------------------------------------------------------------------------------
+%	LANGUAGES SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Publication}
+\begin{small}
+\cvitem{2018}{\textbf{Qian, Q.}, Lin, Y., Luo, Y., Zhao, X., Zhao, Z., Luo, Y., \& Liu, X. (2018). \emph{Sensitivity of a simulated squall line during SCMREX to parameterization of microphysics}. \textbf{Journal of Geophysical Research: Atmospheres}.}{}
+\cvitem{2016}{\textbf{Qifeng, Q.}, \& Yanluan, L. (2016). \emph{An improvement of the SBU-YLIN microphysics scheme in squall line simulation}. \textbf{arXiv}.}{}
+\end{small}
+
+%----------------------------------------------------------------------------------------
+%	Thesis SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Degree Thesis}
+\cventry{硕士学位}{云微物理方案对飑线模拟的敏感性研究}{对中国华南季风降水试验期间的一次表现过程展开了观测分析与数值模拟，指出在弱天气强迫条件下，模拟的飑线长度和主要受冷池强度影响，并根据研究结果重新设计计算公式，改进了SBU-YLIN云微物理方案的模拟效果。改进方案已提交WRF}{}{}{}
+
+\cventry{学士学位}{中国大规模利用可再生能源的可能气候效应}{通过在WRF模式中设置风电场与光伏电站，探讨了中国大规模利用可再生能源的潜在气候效应}{}{}{}
+
+%----------------------------------------------------------------------------------------
+%	Project SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Project}
+\cvitem{2015.09--2017.06}{中国华南季风降水试验，中国气象局}
+\cvitem{2017.05--2017.12}{广告平台研发，汉迪世纪科技有限公司}
+\cvitem{2016.10--2017.04}{短临预报系统研发，彩云天气}
+\cvitem{2014.09--2017.06}{清华大学地学系自主区域气候模式研发，清华大学地球系统科学系}
+\cvitem{2013.12--2014.06}{中国大规模建设风电场与光伏电站的气候效应，清华大学地球系统科学系}
+\cvitem{2013.05-2014.06}{地形触发对流的热动力机制，国家级大学生创新项目，南京信息工程大学大气科学学院}
+
+
+%----------------------------------------------------------------------------------------
+%	Links SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Links}
+\cvitem{主页}{https://qqfraphael.github.io}
+\cvitem{Github}{https://github.com/QQFRaphael}
+\cvitem{LeetCode}{https://leetcode-cn.com/qqfraphael}
+\cvitem{Kaggle}{https://www.kaggle.com/q19910708}
+\end{document}

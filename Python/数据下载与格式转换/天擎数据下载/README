@@ -1,0 +1,7 @@
+# README (by QQF@2022-04-19)
+
+crontab和雷达数据下载脚本由钱奇峰完成，自动站下载脚本由戴祥霖完成
+调用天擎时，输入的时间必须是世界时。因此，每个Downloader目录下的down.sh脚本中会将输入时间转换为世界时
+启动自动定时下载的命令：crontab Download.cron
+crontab的log文件以及雷达数据下载的log文件都在logs目录下，有数据问题可以先检查log的情况
+

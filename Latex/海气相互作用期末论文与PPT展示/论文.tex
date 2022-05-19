@@ -1,0 +1,215 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{times}
+\usepackage{setspace}
+\usepackage{SIunits}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage[top=25.4mm,bottom=25.4mm,left=31.8mm,right=31.8mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{fontspec, xunicode, xltxtra}  
+\usepackage{float}
+\setmainfont{Times}  
+%\pagestyle{fancy}
+
+\begin{document}
+
+\title{The Climate Impact of Arctic Sea Ice Decrease}
+\date{}
+\author{Qifeng Qian}
+
+\begin{document}
+\maketitle
+
+
+\abstract{In this paper, I try to explore the climate impact of the sharp decrease of Arctic sea ice. This paper is organised as follows: first, an introduction to the background of global warming in atmosphere, cryosphere, greenhouse gases and other elements and about some extreme cold events that occurs frequently in the northern hemisphere in recent years; second, I try to analyse the distribution and variation of Arctic sea ice in different periods;  last, I design two experiments using CAM3, trying to reveal the climate impact of dramatic declination of Arctic sea ice.\newline \textbf{Keywords:} Arctic sea ice, climate effect, CAM3}
+
+\section{Introduction}
+Global warming is a hot issue in recent years, which is confirmed through observations. Some changes do not occur in decades, or even in thousands of years. global warming has a great impact on climate system, like atmosphere and ocean are warming up, total amount of ice and snow are decreasing, sea level are increasing, and the increasing of greenhouse gases. [1]
+\subsection{Atmosphere}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig01.png}  
+\caption{Surface temperature anomaly of global land the ocean (1850-2012)[1]}
+\end{figure} 
+Figure 1 is draw with 3 observation data sets. Above panel is the annual mean, and the below panel is the average of every ten years, containing an evaluation of uncertainty (black line). The anomaly is calculate relative to the average of 1961-1990. \newline
+We can see that:\newline
+(1) From 1980 to 2010, the surface temperature increase in every ten years is larger than any time since 1850, which may be the most warm 30 years in past 1400 years.\newline
+(2) The global mean temperature exist decadal variations, but still growing.\newline
+(3) Past ten years is the most warm ten years in one hundred years.\newline
+
+\subsection{Cryosphere}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig02.png}  
+\caption{Areas of Arctic sea ice[1]}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig03.png}  
+\caption{The areas of spring snow in northern hemisphere[1]}  
+\end{figure} 
+It is quite clear that in the past 50 years, the areas of Arctic sea ice in summer keep decreasing, and the decreasing is still happening. Recent 20 years, the spring snow of northern hemisphere covers fewer and fewer areas, especially in 1980-1990. But the decreasing of spring snow is not obvious in recent 10 years. Besides, observations show that the area of Greenland island and Antarctic ice sheet is keep decreasing in the past decade. Ice sheet is decreasing globally.[1]
+
+\subsection{Greenhouse gases}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig04.png}  
+\caption{Carbon dioxide concentration in atmosphere[1]}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig05.png}  
+\caption{Carbon dioxide in sea surface layers and PH value[1]}  
+\end{figure} 
+We can see that ocean has already absorbed about 30\% carbon dioxide released by human activity, which leads to the acidification of ocean. From the industry revolution, the carbon dioxide is increasing about 40\%, and still shows an increasing trend. As we all know that greenhouse gases is mainly from the the burning of fossil fuels and the changes of land use. The increasing rate of greenhouses gases maybe the fasted in past 22000 years.
+
+\subsection{Extreme cold event}
+During the global warming, the warming of winter is most obvious in the whole year. However, extreme cold event is quite frequently happen in recent years in northern hemisphere.[2]
+Some extreme cold event are listed below [3]: \newline
+(1) 2007-2008, boreal of north America, east Asia had heavy snow. \newline
+(2) 2008-2009, boreal of north America had heavy snow, England and north area of Asia were quite cold.\newline
+(3) 2009-1010, America and Europe had great snow event.\newline
+(4) 2010-2011, southeast of America and northwest of Europe, even the whole Europe and Asia became cold and many areas had great snow.\par
+The increasing of greenhouses gases seems do not increase the mean temperature of recent ten years very obviously like before. There are frequent cold event in north hemisphere winter. All that leads to the deny of global warming.\newline
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=3in]{fig06.png}  
+\caption{The impact of extreme event of 2001-2010 relative to 1991-2000}  
+\end{figure} 
+Figure 6 summarise the impact of extreme event of 2001-2010 compared with 1991-2000 (hot wave, cold event, draught, storm, flood). The increase of extreme hot event increase most obvious. Second is the extreme cold event. 
+
+\subsection{Decrease of Arctic sea ice}
+From 1979, Arctic sea ice is decreasing in every season, every continuous ten years. The reconstruction data shows that Arctic sea ice disappeared speed and the increasing rate of sea level is never happened since 1459. The snow cover area is decrease from the middle of 20th century. It seems that the Arctic sea ice may totally disappear in the coming 30 years. [4]\par
+The difficult of researches from several aspect: one is the fast disappear of Arctic sea ice, one is the mechanism of disappearance of Arctic sea ice, and the numerical model performs not very well in these studies.
+
+\section{The characteristic of Arctic sea ice variation}
+I use Sea ice index from http://nsidc.org/data/G02135 to analyse the characteristic of Arctic sea ice variation. 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig10.png}  
+\caption{Sea ice extent and sea ice area, interp by the change of observation instrument}  
+\end{figure} 
+From this picture, we can clearly see that the earlier, the more ice in the Arctic. It seems that all months keep almost the same trend and variation. We also do a linear trend here about the sea ice area. As there exits some missing data, we analyse 1988-2012. The strongest variation of Arctic sea ice is in July to August, so we mainly focus on this period.
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=4in]{fig11.png}  
+\caption{Arctic sea ice area and linear trend}  
+\end{figure} 
+From the picture of linear trend, we can see that the area of Arctic se ice is keep decreasing, and this result is in accordance with some hot issue that there will be no sea ice in Arctic in 30 years. All the linear trend are tested under the 90\% significance test. 
+
+\section{Numerical tests}
+\subsection{Experiment design}
+In this paper, I use CAM3 to simulate the impact of declination of Arctic sea ice. I substitute the sst and ice force field in CAM3 with Hadley center sst and ice data [5]. I first do a test to see the result of the substitution (from 2000-2011). Then I simulate two periods, one is 1980-1991 (more ice), the other is 2000-2001 (less ice). I variate the ice and sst simultaneously, because the variation of ice will affect the sst. For example, if ice disappear, then the sea covered by the ice will be exposed to the sun, and will be hotted. This effect is also caused by the change of ice.  The melting of ice also changes the sst. 
+\subsection{The results of substitution}
+This section is about the substitution of sst and ice force field in CAM3. We can clearly see how great the force field will affect the simulation. This substitution even affect the general circulation on 200hPa and 500hPa. Precipitation and surface temperature are also be affected.
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig12.png}  
+\caption{The difference of 10 years mean: total precipitation (upper left), surface temperature (upper right), 200hPa geopotential height (lower left), 500hPa geopotential height (lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig13.png}  
+\caption{The difference of 10 years mean: total precipitation in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig14.png}  
+\caption{The difference of 10 years mean: surface temperature in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig15.png}  
+\caption{The difference of 10 years mean: 200hPa geopotential height in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig16.png}  
+\caption{The difference of 10 years mean: 500hPa geopotential height in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig17.png}  
+\caption{The difference of 10 years mean: sea level pressure in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig18.png}  
+\caption{The difference of 10 years mean: 850hPa specific humidity in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+
+\subsection{The simulation results}
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig19.png}  
+\caption{The difference of 10 years mean: total precipitation (upper left), surface temperature (upper right), 200hPa geopotential height (lower left), 500hPa geopotential height (lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig20.png}  
+\caption{The difference of 10 years mean: total precipitation in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig21.png}  
+\caption{The difference of 10 years mean: surface temperature in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig22.png}  
+\caption{The difference of 10 years mean: 200hPa geopotential height in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig23.png}  
+\caption{The difference of 10 years mean: 500hPa geopotential height in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig24.png}  
+\caption{The difference of 10 years mean: sea level pressure in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig25.png}  
+\caption{The difference of 10 years mean: 850hPa specific humidity in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+
+\subsection{Analysis}
+\subsubsection{Precipitation}
+Figure 16 shows that in most area, the 10 years mean total precipitation is increasing. But in northern part of north Indian Ocean and the middle Pacific Ocean, 10 years mean total precipitation is decreasing. Further exploration is show in Figure 17, which is the 10 years total precipitation in four seasons. We can see that in all the seasons,  northern part of north Indian Ocean precipitation is decrease while the precipitation in southern part of north Indian Ocean is increasing except in winter. 
+In the middle America, the precipitation is increasing and in the west of middle Pacific the precipitation is deceasing. It is quite noticeable that precipitation in summer and autumn in middle Africa shows a belt pattern. The belt is so straight that I think this phenomena is caused purely by the simulation of ITCZ.
+ 
+\subsubsection{Surface temperature}
+10 years mean surface temperature varies quite little. Most of the world shows an increasing except the east part of Pacific. The temperature in the peripheral of Antarctic continent varies more intense than other areas. This is because the ice in the peripheral of Antarctic continent is not very stable. This phenomena is also see in the seasonal pictures. It is obvious that in North America, the temperature is decreasing quite intensely in winter and spring. This means that when Arctic sea ice is decreasing, the temperature in north America will decrease. We can also see that in spring and winter, there is a strong decreasing of temperature in north America, which may be related to the extreme cold event.
+  
+\subsubsection{General circulation}
+We show the results of 200hPa and 500hPa. On 500hPa, we can see an almost wave like pattern. The wave train like increasing and decreasing of geopotential height mostly appear on mid and high latitude. We can also find that geopotential height in tropical area is increasing. In Antarctic, geopotential height is increasing in autumn and winter while in spring and summer is decreasing. In 200hPa, the amplitude of geopotential height variation is amplified. It seems that most area of the word is increasing. The variation characteristic in Antarctic is enhanced on 200hPa. Above description remind us this may be a wave problem. The decreasing of Arctic sea ice changes the energy balance in Arctic, and the local energy change will affect the waves in mid and high latitude. These waves will propagates horizontally and vertically, and spread these impact to other areas. 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig26.png}  
+\caption{The change of EP flux}  
+\end{figure} 
+Figure 23 is the change of EP flux. We obtain this picture as follows: first, calculate the ep flux of each time step; second, take the 10 year average of 1980-1991 and 2000-2011 separately; three, take the difference of them. EP flux can give us a more direct information about the wave properties. I add a scale factor in levels above 100hPa in order to see the impact on stratosphere more apparently. From figure 23, we can see that, the decreasing of sea ice will weaken the upward propagation in the mid latitude of northern hemisphere. The equator ward propagation of stratosphere wave in mid latitude of southern hemisphere is strengthened. All that means the induction of wave is affected by the decreasing of sea ice. The impact may affect the propagation of wave even in stratosphere. So, there probably exits a certain relationship between the extreme event with the declination of sea ice. 
+\begin{figure}[H]  
+\centering  
+\includegraphics[width=5in]{fig27.png}  
+\caption{The change of EP flux in four seasons (spring: upper left; summer: upper right; autumn: lower left; winter: lower right)}  
+\end{figure} 
+Figure 24 is the EP flux in four seasons. In spring, we can see that the the declination of arctic sea ice will weaken the wave propagates northward. It also weaken the wave propagates upward in mid latitude of northern hemisphere. However, in summer, we can find that, the decreasing of sea ice will enhance the wave propagates southward in stratosphere, but will not affect the vertically propagates wave in southern hemisphere mid latitude. Autumn shows a similar phenomenon with summer. However, winter shows a different phenomenon. In winter, wave propagates northward is enhanced, and there is an enhancement in the southern hemisphere stratosphere too. The mechanism is not clear yet.
+
+\subsubsection{Sea level pressure and relative humudity}
+The variation of sea level pressure do not show certain characteristic. But the relative humidity is increasing almost globally. This mean the decreasing of sea ice will increase the moisture of atmosphere. It is noticeable that there is an significant decreasing in the west coast of south America in autumn and winter. 
+
+\section{Summary}
+In this paper, we try to explore the climate impact of decreasing of Arctic sea ice. The most profound effect is that it will affect the general circulation while its mechanism is not clear yet. The decreasing of sea ice will also affect the global precipitation, relative humidity and so on. All the physical processes need further investigation. 
+
+\section{Reference}
+\noindent[1]STOCKER T, QIN D, PLATTNER G, et al. IPCC, 2013: Climate Change 2013: The Physical Science Basis. Contribution of Working Group I to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change [M]. Cambridge: Cambridge University Press. 2013.\newline
+[2]SCREEN J A, SIMMONDS I. Exploring links between Arctic amplification and mid\‐latitude weather [J]. Geophysical Research Letters, 2013, 40(5): 959-64.\newline
+[3]GUIRGUIS K, GERSHUNOV A, SCHWARTZ R, et al. Recent warm and cold daily winter temperature extremes in the Northern Hemisphere [J]. Geophysical Research Letters, 2011, 38(17)\newline
+[4]WANG M, OVERLAND J E. A sea ice free summer Arctic within 30 years? [J]. Geophysical Research Letters, 2009, 36(7):\newline
+[5]HURRELL J W, HACK J J, SHEA D, et al. A new sea surface temperature and sea ice boundary dataset for the Community Atmosphere Model [J]. Journal of Climate, 2008, 21(19)
+
+\end{document}

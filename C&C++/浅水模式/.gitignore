@@ -1,0 +1,6 @@
+*.o
+*.exe
+
+.DS_Store
+__pycache__
+SWM.exe.dSYM

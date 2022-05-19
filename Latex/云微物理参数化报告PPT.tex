@@ -1,0 +1,358 @@
+\documentclass[14pt]{beamer}
+\useoutertheme{default}
+
+% Alternative design for title
+%\setbeamercolor{frametitle}{fg=red}
+%\setbeamerfont{frametitle}{series=\bfseries}
+%\setbeamertemplate{frametitle}
+%{
+%\begin{centering}
+%\insertframetitle\par
+%\end{centering}
+%}
+\usepackage{graphicx}
+\usepackage{exscale}
+\usepackage{colortbl}
+\usepackage{relsize}
+\setbeamercolor{titlelike}{fg=white,bg=cyan}
+%\setbeamercolor{normal text}{fg=white,bg=black}
+% I use Palatino for all text
+\usefonttheme{serif}
+\usepackage{mathpazo} % math & rm
+\linespread{1.1}        % Palatino needs more leading (space between lines)
+\normalfont
+\usepackage[T1]{fontenc}
+% One could use the concrete fonts by Knuth
+%\usepackage{concmath}
+%\usepackage{eulervm}
+% For larger spacing of table rows
+\renewcommand{\arraystretch}{1.5}
+% \setbeamercolor{background canvas}{bg=magenta!10}
+\setbeamertemplate{itemize items}[square]
+\setbeamercolor{itemize item}{fg=gray}
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{galaxy1}}
+% To change margins for all slides
+%\setbeamersize{text margin left=0.5cm,text margin right=0.5cm}
+% To change margin on one slide only
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
+% More typesetting environments and options for mathematics
+% \usepackage{amsmath}
+% Fancy fonts for mathematics
+% \usepackage{amsfonts}
+\title{Cloud Microphysics}
+\author{Qifeng Qian}
+\institute{CESS, Tsinghua University}
+\date{\today}
+
+\begin{document}
+% TODO
+% Separately mark 2HDM and singlet terms
+% More citations
+%
+\frame[plain]{\titlepage
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item \textbf{Microphysics of warm clouds}
+\item Microphysics of cold clouds
+\item Types of microphysical processes in clouds 
+\item Recent work
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Microphysics of warm clouds}
+cloud physics consists of two branches:\newline
+\begin{itemize}
+\item Microphysics
+\item Cloud dynamics
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Microphysics of warm clouds}
+\begin{itemize}
+\item warm clouds: temperature everywhere above 0$^\circ$C
+\item cold clouds: temperature everywhere below 0$^\circ$C, both ice and liquid particles may exist.
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Nucleation of drops}
+The particles in a cloud form by a process referred to as nucleation, in which water molecules change from a less ordered to a more ordered state.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Nucleation of drops}
+\begin{itemize}
+\item homogeneous nucleation: the formation of a drop of pure water from vapor
+\item heterogeneous nucleation: the collection of molecules onto a foreign substance.
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Nucleation of drops}
+Kelvin formular:\par
+\centering{$R_c=\dfrac{2\sigma_{vl}}{n_lk_BTln(e/e_s)}$}\par
+\begin{itemize}
+\item This radius is evidently crucially dependent on the relative humidity
+\item The greater the supersaturation, the smaller the size of the drop that must be exceeded by the initial chance collection of molecules.
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Nucleation of drops}
+Kelvin formular:\par
+\centering{$R_c=\dfrac{2\sigma_{vl}}{n_lk_BTln(e/e_s)}$}\newline
+\begin{itemize}
+\item However, at atmospheric temperatures, the dependence of R on temperature is comparatively weak.\item This rate of formation of drops exceeding the critical size is the nucleation rate
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\begin{itemize}
+\frametitle{Nucleation of drops}
+\item the air must be supersaturated by 300-400\% for a drop of pure water to be nucleated homogeneously 
+\item supersaturation in the atmosphere seldom exceeds 1\%
+\item homogeneous nucleation of water drops plays no role in natural clouds
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\begin{itemize}
+\frametitle{Nucleation of drops}
+\item Heterogeneous nucleation is the process whereby cloud drops actually form
+\item If the surface tension between the water and the nucleating surface is sufficiently low, the nucleus is said to be wettable, and the water may form a spherical cap on the surface of the particle
+\item A particle onto which the molecules collect in this manner is referred to as a cloud condensation nucleus (CCN)
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Condensation and Evaporation}
+\begin{itemize}
+\item Condensation: Once formed, water drops may continue to grow as vapor diffuses toward them.
+\item Evaporation: The reverse process, drops decreasing in size as vapor diffuses away from them, is called evaporation.
+\item diffusional growth rate of a drop depends on the temperature and humidity of the environment and on the radius ofthe drop.
+\end{itemize}
+\centering{$m_{dif}=\dfrac{4\pi RS}{F_k + F_D}$}\newline
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Fall Speeds of Drops}
+\begin{itemize}
+\item terminal fall speed: a particle is accelerated downward by gravity, its motion is increasingly retarded by the growing frictional force
+\item Generally V is negligible until the drops reach a radius of about 0.1 mm. This is usually considered to be the threshold size separating cloud droplets, which are suspended in the air indefinitely, from falling precipitation drops.
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Fall Speeds of Drops}
+\begin{itemize}
+\item drizzle: 0.1-0.25 mm
+\item rain: >0.25 mm
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Coalescence}
+\begin{itemize}
+\item Continuous Collection: the particle of mass m is assumed to increase in mass continually
+\item $m_{col}=A_m|V(m)-V(m^{'})|\rho q_{m^{'}}\Sigma(m,m^{'})$
+\item Stochastic Collection: $\dfrac{\partial{N(m,t)}}{\partial t}=I_2(m)-I_1(m)$
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Coalescence}
+\begin{itemize}
+\item For realistic conditions, it is generally found that a large portion of the liquid water accumulates in the tail of the distribution.
+\end{itemize}
+\includegraphics[width=\columnwidth]{./fig01}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Breakup of Drops}
+\begin{itemize}
+\item When raindrops achieve a certain size, they become unstable and break up into smaller drops
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Microphysics of warm clouds
+\item \textbf{Microphysics of cold clouds}
+\item Types of microphysical processes in clouds 
+\item Recent work
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Homogeneous Nucleation of Ice Particles}
+\begin{itemize}
+\item Ice particles in clouds may be nucleated from either the liquid or vapor phase. Homogeneous nucleation of ice from the liquid phase is analogous to nucleation of drops from the vapor phase.
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Homogeneous Nucleation of Ice Particles}
+\begin{itemize}
+\item Theoretical and empirical results indicate that homogeneous nucleation of liquid water occurs at temperatures lower than about -35$^\circ$C to -40$^\circ$C, depending somewhat on the size of the drops being subjected to the low temperature
+\item This threshold lies within the range of temperatures in natural clouds, which may have cloud-top temperatures below -80$^\circ$C
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Homogeneous Nucleation of Ice Particles}
+\begin{itemize}
+\item temperatures below -40$^\circ$C atmospheric clouds are always composed entirely of ice, in which case they are said to be glaciated.
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Homogeneous Nucleation of Ice Particles}
+\begin{itemize}
+\item Theoretical estimates of the rate at which molecules in the vapor phase aggregate to form ice particles of critical size indicate, however, that nucleation occurs only at temperatures below -65$^\circ$C and at supersaturations ~1000\% 
+\item Such high supersaturations do not occur in the atmosphere, homogeneous nucleation of ice directly from the vapor phase never occurs in natural clouds
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Heterogeneous Nucleation of Ice Particles}
+\begin{itemize}
+\item The principal difficulty with the heterogeneous nucleation of the ice is that the molecules of the solid phase are arranged in a highly ordered crystal lattice
+\end{itemize}
+\centering{\includegraphics[width=0.5\columnwidth]{./fig02}}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Deposition and Sublimation}
+\begin{itemize}
+\item deposition: growth of an ice particle by diffusion of ambient vapor toward the particle
+\item sublimation: the loss of mass of an ice particle by diffusion of vapor from its surface into the environment
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Aggregation and Riming}
+\begin{itemize}
+\item aggregation: ice particles collect other ice particles, strongly depends on temperature
+\item riming: ice particles collect liquid drops, which freeze on contact, extreme riming produces hailstones
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Ice Enhancement}
+\begin{itemize}
+\item When the concentrations of ice particles are measured in natural clouds, it is often found that there are far more ice particles present than can be accounted for by the typical concentrations of ice nuclei activated by lowering the temperature of air in expansion chambers
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Ice Enhancement}
+\begin{itemize}
+\item Fragmentation of ice crystals
+\item Ice splinter production in riming
+\item Contact nucleation
+\item Condensation or deposition nucleation
+\item The latter two mechanisms, do not require the pre-existence of ice particles and may thus help to account for the sudden appearance of high concentrations in cloudy air at relatively high temperatures.
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Others}
+\begin{itemize}
+\item Fall Speeds of Ice Particles: hailstone
+\item melting
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Microphysics of warm clouds
+\item Microphysics of cold clouds
+\item \textbf{Types of microphysical processes in clouds} 
+\item Recent work
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{microphysical processes}
+\begin{itemize}
+\item Nucleation of particles
+\item Vapor diffusion
+\item Collection
+\item Breakup of drops
+\item Fallout
+\item Ice enhancement
+\item Melting
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{microphysical processes}
+\begin{itemize}
+\item Water vapor
+\item Cloud liquid water
+\item Precipitation liquid water
+\item Cloud ice
+\item Precipitation ice 
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{microphysical processes}
+\centering{\includegraphics[width=0.8\columnwidth]{./fig03}}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Outline}
+\begin{itemize}
+\item Microphysics of warm clouds
+\item Microphysics of cold clouds
+\item Types of microphysical processes in clouds
+\item \textbf{Recent work}
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Recent work}
+\centering{\includegraphics[width=.4\columnwidth]{./fig04}}
+\centering{\includegraphics[width=\columnwidth]{./fig05}}
+\centering{\includegraphics[width=.5\columnwidth]{./fig06}}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Recent work}
+\centering{\includegraphics[width=\columnwidth]{./fig07}}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Recent work}
+\begin{itemize}
+\item horizontal: 384*250, vertical: 31
+\item fdda
+\item 1day/3 months, 240
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Cloud Microphysics}
+\centering{Thanks}\par
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

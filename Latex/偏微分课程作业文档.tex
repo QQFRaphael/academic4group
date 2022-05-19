@@ -1,0 +1,204 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{times}
+\usepackage{setspace}
+\usepackage{SIunits}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage[top=25.4mm,bottom=25.4mm,left=31.8mm,right=31.8mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{fontspec, xunicode, xltxtra}  
+\usepackage{float}
+\setmainfont{SimSun}  
+
+\pagestyle{fancy}
+
+
+
+\title{正压原始方程模式：理论，实现与回报测试}
+\date{}
+\author{钱奇峰，王建恒，孙贺}
+
+\begin{document}
+\maketitle
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+\section{引言}
+\indent
+天气预报和人们的生产生活有密切的联系。一般意义上，天气预报有三种方法：一是传统的天气学方法，二是统计学方法，三是数值天气预报。天气学方法发源于19世纪中叶，依赖于预报员的经验，不够客观，同时不够准确。统计学方法相对天气学方法准确和客观，但是没有明确的物理意义，预报效果不稳定。数值天气预报基于动力气象学中严谨的数学分析，是三种方法中最为客观，可靠的方法。大气运动方程组是一组复杂的非线性方程，本质上是纳维斯托克斯方程的一种拓展。要尽可能准确的实现数值天气预报，需要我们对大气运动方程组进行简化，同时设计尽可能合理的数值算法。
+
+\section{正压原始方程}
+地球可以近似为一个球体，因而大气运动方程组最理想的形式是球坐标系表达形式。
+
+\begin{equation}
+\begin{cases}
+\dfrac{du}{dt}=-\dfrac{1}{\rho r cos\varphi}\dfrac{\partial{p}}{\partial{\lambda}}+fv-\tilde{f}w+\dfrac{uvtan\varphi}{r}-\dfrac{uw}{r}+F_{\lambda}\\
+\dfrac{dv}{dt}=-\dfrac{1}{\rho r }\dfrac{\partial{p}}{\partial{\varphi}}-fu+\dfrac{u^2tan\varphi}{r}-\dfrac{vw}{r}+F_{\varphi}\\
+\dfrac{dw}{dt}=-\dfrac{1}{\rho}\dfrac{\partial{p}}{\partial{r}}+\tilde{f}u-g+\dfrac{u^2+v^2}{r}+F_r\\
+\dfrac{d\rho}{dt}+\rho(\dfrac{1}{rcos\varphi}\dfrac{\partial{u}}{\partial{\lambda}} + \dfrac{1}{rcos\varphi}\dfrac{\partial{vcos\varphi}}{\partial{\varphi}} + \dfrac{1}{r^2}\dfrac{\partial{wr_2}}{\partial{r}})=0\\
+c_p\dfrac{dT}{dt}-\dfrac{RT}{p}\dfrac{dp}{dt}=\dot{Q}\\
+p=\rho RT
+\end{cases}
+\end{equation}
+
+前两个方程是水平运动方程，第三个是垂直运动方程，第四个是连续方程，第五个是热力学方程，第六个是理想气体状态方程。其中，u，v，w是风矢量在经向，纬向，垂直方向的三个分量，$\lambda，\varphi，r$代表经度，纬度，垂直方向距离。g是重力加速度，F代表摩擦耗散。$\rho$ 代表大气密度，$c_p$为热力学等压热容，$\dot{Q}$表示非绝热加热，R是理想气体方程中的常数，f是科氏参数，$\tilde{f}$为另一参数。这样的方程组看似完善，其实还有很多复杂的物理过程没有包含在内，比如说湿热力学过程，辐射过程，云的一系列过程等等。仅仅求解大气运动方程的数值算法，在数值天气预报里称为动力框架。球坐标系下求解大气运动方程组过于复杂。我们假定：大气是均匀不可压缩流体；密度为一常数；大气上边界为一自由表面；下边界为地球表面且不考虑地形；大气是正压的；f平面近似。经过一系列数学推导后，我们可以得到所谓的正压原始方程：
+
+\begin{equation}
+\begin{cases}
+\dfrac{\partial{u}}{\partial{t}}+u\dfrac{\partial{u}}{\partial{x}}+v\dfrac{\partial{u}}{\partial{y}}-fv+\dfrac{\partial{\Phi}}{\partial{x}}=0\\
+\dfrac{\partial{v}}{\partial{t}}+u\dfrac{\partial{v}}{\partial{x}}+v\dfrac{\partial{v}}{\partial{y}}+fu+\dfrac{\partial{\Phi}}{\partial{y}}=0\\
+\dfrac{\partial{\Phi}}{\partial{t}}+u\dfrac{\partial{\Phi}}{\partial{x}}+v\dfrac{\partial{\Phi}}{\partial{y}}+\Phi(\dfrac{\partial{u}}{\partial{x}}+\dfrac{\partial{v}}{\partial{y}})=0
+\end{case}
+\end{equation}
+
+其中u，v代表风，$\Phi$代表位势高度。如果给出初始条件，上述方程组可以用于预报未来风场和位势高度场。由于我们对大气运动的原始方程做了大量的近似和简化，正压原始方程模式只能应用于预报500hPa等压面上的天气形势。
+
+\section{正压原始方程的积分守恒性}
+对正压原始方程进行一系列的数学分析可以证明，正压原始方程组具有很多的积分守恒性质：全球总动能，总位能，全球总质量，全球总涡度，全球总绝对角动量守恒。这些守恒性是方程的固有物理性质，在进行方程的离散化时，要尽可能保证这些守恒性质不被破坏。
+
+\section{二次守恒平流格式}
+我们分析一个简单的平流方程：
+\begin{equation}
+\dfrac{\partial{F}}{\partial{t}}+\vec{V}\cdot\nabla F=0
+\end{equation}
+其中F为任意标量函数。由于我们在推导正压原始方程时做了流体不可压的假定，因此我们有$\nabla\cdot\vec{V}=0$。从而方程可以变化为通量形式：
+\begin{equation}
+\dfrac{\partial{F}}{\partial{t}}+\nabla\cdot(F\vec{V})=0
+\end{equation}
+方程两边同时乘以F，并对整个区域积分，可以的到：
+\begin{equation}
+\dfrac{\partial}{\partial{t}}\int_s\dfrac{F^2}{2}dS=-\int_s\dfrac{F^2}{2}\nabla\cdot\vec{V}=0
+\end{equation}
+在这里，我们采用刚性边界或者周期边界条件，所以上式为0。这表明方程在边界条件的影响下本身具有$F^2$在区域内守恒的特点。\newpar
+在这次试验里，我们采用的二次平流守恒格式是半动量格式（松野格式）:
+\begin{eqnarray}
+\bar{F_t}^t+\overline{\bar{u}^x F_x}^x+\overline{\bar{v}^y F_y}^y=0\\
+\bar{F}^x=\dfrac{1}{2}(A_{i+\frac{1}{2},j}+A_{i-\frac{1}{2},j})\\
+F_x=\dfrac{1}{d}(A_{i+\frac{1}{2},j}-A_{i-\frac{1}{2},j})\\
+\bar{F_x}^x=\dfrac{1}{2d}(A_{i+1,j}-A_{i-1,j})
+\end{eqnarray}
+
+\section{兰伯特投影}
+由于我们已经不在球坐标系下进行求解，因而需要对所有的方程进行兰伯特投影变换。兰伯特投影是一种正形投影。我们得到如下方程：
+\begin{eqnarray}
+\dfrac{\partial{u}}{\partial{t}}+m(u\dfrac{\partial{u}}{\partial{x}}+v\dfrac{\partial{u}}{\partial{y}})-f^{\ast}v+mg\dfrac{\partial{z}}{\partial{x}}=0\\
+\dfrac{\partial{v}}{\partial{t}}+m(u\dfrac{\partial{v}}{\partial{x}}+v\dfrac{\partial{v}}{\partial{y}})-f^{\ast}u+mg\dfrac{\partial{z}}{\partial{y}}=0\\
+\dfrac{\partial{z}}{\partial{t}}+m^2[u\frac{\partial}{\partial{x}}(\dfrac{z}{m})+v\frac{\partial}{\partial{y}}(\dfrac{z}{m})+\dfrac{z}{m}(\dfrac{\partial{u}}{\partial{x}}+\dfrac{\partial{v}}{\partial{y}})]=0\\
+f^{\ast}=f+m^2[v\dfrac{\partial}{\partial{x}}(\dfrac{1}{m})-u\dfrac{\partial}{\partial{y}}(\dfrac{1}{m})]
+\end{eqnarray}
+
+\section{正压原始方程组的二次守恒平流格式}
+将二次守恒平流格式推广到正压原始方程组：
+\begin{eqnarray}
+\dfrac{\partial{u_{i,j}}}{\partial{t}}=-m_{i,j}(\overline{\bar{u}^xu_x}^x+\overline{\bar{v}^yu_y}^y)+g\bar{z_x}^x+\widetilde{f_{i,j}^{\ast}}v_{i,j}=E_{i,j}\\
+\dfrac{\partial{v_{i,j}}}{\partial{t}}=-m_{i,j}(\overline{\bar{u}^xv_x}^x+\overline{\bar{v}^yv_y}^y)+g\bar{z_y}^y-\widetilde{f_{i,j}^{\ast}}u_{i,j}=G_{i,j}\\
+\dfrac{\partial{z_{i,j}}}{\partial{t}}=-m_{i,j}^2[\overline{\bar{u}^x(\frac{z}{m})_x}^x+\overline{\bar{v}^y(\frac{z}{m})_y}^y+\dfrac{z_{i,j}}{m_{i,j}}(\bar{u_x}^x+\bar{v_y}^y)]=H_{i,j}\\
+\widetilde{f_{i,j}^{\ast}}=f_{i,j}+u_{i,j}\bar{m_y}^y-v_{i,j}\bar{m_x}^x
+\end{eqnarray}
+这就是最终形式的正压原始方程模式的预报方程。
+
+\section{初始条件}
+正压原始方程模式需要初始位势高度场和风场。理论分析和实践表明，直接使用观测风场和高度场作为初值容易产生高频振荡，使数值积分不稳定。因此我们采用静力初始化的方法，利用地转风关系给出初值。
+\begin{equation}
+\begin{cases}
+z_{i,j}=z_{i,j}^0\\
+u_{i,j}=u_{i,j}^0=-\dfrac{m_{i,j}g}{f_{i,j}}\dfrac{\partial{z_{i,j}^0}}{\partial{y}}\\
+v_{i,j}=v_{i,j}^0=\dfrac{m_{i,j}g}{f_{i,j}}\dfrac{\partial{z_{i,j}^0}}{\partial{x}}\\
+\end{cases}
+\end{equation}
+
+\section{边界条件}
+采用固定边界条件：
+\begin{equation}
+\dfrac{\partial{u_{i,j}}}{\partial{t}}\lvert_\beta=\dfrac{\partial{v_{i,j}}}{\partial{t}}\lvert_\beta=\dfrac{\partial{z_{i,j}}}{\partial{t}}\lvert_\beta=0
+\end{equation}
+$\beta$表示预报区域的水平侧边界。固定边界条件虽然容易实现，但是这明显是不符合物理规律的。
+
+\section{时间积分方案}
+设F是一列向量，分量为我们的预报变量u，v和z/m。因而差分形式的正压原始方程组也可以表达为：
+\begin{equation}
+\dfrac{\partial{F_{i,j}}}{\partial{t}}=A_{i,j}F_{i,j}
+\end{equation}
+\begin{equation}
+A_{i,j}=
+\left(
+\begin{array}{ccc}
+L & \widetilde{f_{i,j}^{\ast}} & -m_{i,j}^2g\overline{(\quad)_x}^x\\
+-\widetilde{f_{i,j}^{\ast}} & L & -m_{i,j}^2g\overline{(\quad)_y}^y\\
+-z_{i,j}\overline{(\quad)_x}^x & -z_{i,j}\overline{(\quad)_y}^y & L
+\end{array}
+\right)
+\end{equation}
+\begin{equation}
+L=-m_{i,j}[\overline{\bar{u}^x(\quad)_x}^x+\overline{\bar{v}^y(\quad)_y}^y]
+\end{equation}
+进行数值计算时，我们可以先使用欧拉后差格式，这样有利于抑制高频振荡，使数值积分稳定。欧拉后差格式如下：
+\begin{equation}
+\begin{cases}
+F_{i,j}^{\ast n+1}=F_{i,j}^n+\Delta t A_{i,j}^nF_{i,j}^n\\
+F_{i,j}^{n+1}=F_{i,j}^n+\Delta t A_{i,j}^{\ast n}F_{i,j}^{\ast n+1}
+\end{cases}
+\end{equation}
+随后可以采用三步法起步的时间中央差分格式。这种差分格式可以表达成：
+\begin{equation}
+\begin{cases}
+F_{i,j}^{n+1/2}=F_{i,j}^n+\dfrac{1}{2}\Delta t A_{i,j}^n F_{i,j}^n\\
+F_{i,j}^{n+1}=F_{i,j}^n+\Delta t A_{i,j}^{n+1/2} F_{i,j}^{n+1/2}\\
+F_{i,j}^{n+2}=F_{i,j}^n+2\Delta t A_{i,j}^{n+1} F_{i,j}^{n+1}
+\end{cases}
+\end{equation}
+
+\section{平滑}
+在时间积分过程中，为了抑制高频振荡，抑制由于时间中央差格式产生的计算解，必须穿插进行时间平滑，时间平滑公式为：
+\begin{equation}
+\widetilde{F_{i,j}^n}^t=(1-S)F_{i,j}^n+\dfrac{S}{2}(F_{i,j}^{n+1}+F_{i,j}^{n-1})
+\end{equation}
+其中S为时间平滑系数。为了滤除短波扰动，抑制非线性计算不稳定，必须穿插进行空间平滑。空间平滑采用五点平滑方案：
+\begin{equation}
+\bar{f_{i,j}}^{i,j}=\dfrac{1}{2}(\bar{f_{i,j}}^i +\bar{f_{i,j}}^j)=f_{i,j}+\dfrac{s}{4}(f_{i-1,j}+f_{i+1,j}+f_{i,j-1}+f_{i,j+1}-4f_{i,j})
+\end{equation}
+
+\section{计算流程图}
+\begin{figure}[H]
+\centering
+\includegraphics[height=21.52cm,width=14.82cm]{./流程图.png}
+\end{figure}
+
+\section{回报测试}
+为了测试正压原始方程数值模式的性能，我们利用1973年4月21日08：00（北京时）我国东北华北地区500hPa等压面位势高度场作为初始场，采用地转风初值，固定的水平侧边界和二次守恒平流格式，应用正压原始方程模式来制作24小时的有限区域500hPa位势高度场和风场的回报试验。
+\begin{figure}[H]  
+\begin{minipage}[t]{0.5\linewidth}  
+\centering  
+\includegraphics[width=3.3in]{baro.000001.png}  
+\caption{初始高度场}  
+\label{fig:side:a}  
+\end{minipage}
+\begin{minipage}[t]{0.5\linewidth}  
+\centering  
+\includegraphics[width=3.3in]{baro.000002.png}  
+\caption{回报高度场}  
+\label{fig:side:b}  
+\end{minipage}  
+\begin{minipage}[t]{0.5\linewidth}  
+\centering  
+\includegraphics[width=3.3in]{baro.000003.png}  
+\caption{初始风场}  
+\label{fig:side:c}  
+\end{minipage}  
+\begin{minipage}[t]{0.5\linewidth}  
+\centering  
+\includegraphics[width=3.3in]{baro.000004.png}  
+\caption{回报风场}  
+\label{fig:side:d}  
+\end{minipage}  
+\end{figure}  
+从初始高度场上可以看到，贝加尔湖西北方向上有一个大槽，同时在我国东北部地区出现了东北冷涡。槽线的方向为西北东南走向，将北方的冷空气引导南下，可能会造成我国北部地区出现降温天气。从预报结果上看，槽进一步发展，槽线的倾斜程度加大，而东北冷涡强度减弱，两者均东移，将继续有降温天气。此外，副热带高压也略往北抬，因而再往后将会转暖。风场与高度场有较好的对应关系，在槽与冷涡之间形成了一个鞍形流场。由于正压原始方程模式只能用于预报500hPa的天气形势，无法预报具体的天气现象。如果要制作完整的天气回报或者预报试验需要有完整的天气预报模式，这是一个巨大的工程项目。
+
+\section{模式的性能}
+实际大气运动包含有两种最基本的动力学过程，即准地转演变过程和地转适应过程。原始方程模式中既有缓慢移动的大气长波，又有快速移动的重力惯性波。因此，正压原始方程模式不但可以模拟准地转演变过程，而且还可以模拟地转适应过程。但是，正压原始方程模式也存在许多问题，现列出如下：\newline
+1.	原始方程模式中含有快波解，为保证计算的稳定，时间步长必须取得很短，因而增大了计算量。\newline
+2.	由于原始方程模式的时间步长取得很短，所以非线性计算不稳定的问题就显得尤为突出。因此，构造性能良好的空间差分格式也成为一个重要的问题。\newline
+3.	原始方程模式中包含几种波动解，作为一个数学问题，它要求给出多个初始条件。除了要求给出风场之间的协调，则在时间积分过程中会产生虚假的重力惯性波。这种虚假的重力惯性波会迅速增长，把天气尺度的波动掩盖掉，使预报遭到破坏。因此，初始资料的协调处理，即资料的初始化也是一个相当重要的问题。\newline
+4.	原始方程模式对边界条件很敏感，要求给出适当的边界条件
+\end{document}

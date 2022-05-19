@@ -1,0 +1,15 @@
+DELIMITER //
+DROP PROCEDURE IF EXISTS mywhiles //
+CREATE PROCEDURE mywhiles()
+BEGIN
+DECLARE ii INT;
+SET ii = 40;
+WHILE ii < 50 DO
+INSERT INTO `AdItem` (`placement_id`, `goldeneye_id`, `aditem_type`, `vendor`, `ad_type`, `id_constrain`, `test_percentage`, `test_start_point`, `description`, `create_time`, `update_time`, `filters`, `exceptions`)
+VALUES
+(ii, 4, 'serialList', 'baidu', 'native', 'baidu_140325', 100, 46, NULL, '2017-10-11 03:35:36', '2017-10-17 03:01:15', '{\"bundle_filter\": null, \"user_level_filter\": [\"3-7\"], \"download_channel_filter\": null, \"region_filter\": null, \"ua_channel_filter\": null}', '{\"region_exception\": null}');
+SET ii = ii + 1;
+END WHILE;
+END//
+DELIMITER ;
+CALL mywhiles();

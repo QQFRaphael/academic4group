@@ -1,0 +1,87 @@
+\documentclass[14pt]{beamer}
+\useoutertheme{default}
+
+% Alternative design for title
+%\setbeamercolor{frametitle}{fg=red}
+\setbeamerfont{frametitle}{series=\bfseries}
+%\setbeamertemplate{frametitle}
+%{
+%\begin{centering}
+%\insertframetitle\par
+%\end{centering}
+%}
+\setbeamercolor{titlelike}{fg=white,bg=cyan}
+%\setbeamercolor{normal text}{fg=white,bg=black}
+% I use Palatino for all text
+\usefonttheme{serif}
+\usepackage{mathpazo} % math & rm
+\linespread{1.1}        % Palatino needs more leading (space between lines)
+\normalfont
+\usepackage[T1]{fontenc}
+% One could use the concrete fonts by Knuth
+%\usepackage{concmath}
+%\usepackage{eulervm}
+% For larger spacing of table rows
+\renewcommand{\arraystretch}{1.5}
+% \setbeamercolor{background canvas}{bg=magenta!10}
+\setbeamertemplate{itemize items}[square]
+\setbeamercolor{itemize item}{fg=gray}
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{galaxy1}}
+% To change margins for all slides
+%\setbeamersize{text margin left=0.5cm,text margin right=0.5cm}
+% To change margin on one slide only
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
+% More typesetting environments and options for mathematics
+% \usepackage{amsmath}
+% Fancy fonts for mathematics
+% \usepackage{amsfonts}
+\title{Simple Presentation Slides \\ with \textit{Beamer}}
+\author{Kristjan Kannike }
+\institute{Scuola Normale Superiore, Italy \\
+NICPB, Estonia}
+\date{\today}
+
+\begin{document}
+% TODO
+% Separately mark 2HDM and singlet terms
+% More citations
+%
+\frame[plain]{\titlepage
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+\frametitle{Stylish Slides}
+\begin{itemize}
+% From slide 1 onwards
+\item<1-> With some care, the \texttt{beamer} package allows to create stylish slides
+\item<2-> \LaTeX\ mathematics $x = \alert<3>{y + z}$ can be freely mixed with text
+\item<3-> \ldots and highlighted
+\end{itemize}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[plain]{
+\frametitle{Slimmer Margins}
+\vspace{-0.25cm}
+\begin{itemize}
+\item On some slide, the normal margins may be too wide\ldots
+\end{itemize}
+\begin{changemargin}{-0.7cm}{+0cm}
+\begin{itemize}
+\item One can define a \texttt{changemargin} environment to fit larger pictures or formulae
+\end{itemize}
+  \end{changemargin}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[plain]{
+The \texttt{frametitle} is optional.
+}
+\end{document}

@@ -1,0 +1,968 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <meta name="GENERATOR" content="Mozilla/4.5 [zh-TW] (WinNT; I) [Netscape]">
+   <meta name="Microsoft Theme" content="strart 101">
+   <meta name="Microsoft Border" content="tl, default">
+   <meta name="Author" content="VBird">
+   <title>Models3-Home</title>
+<style>
+      <!--
+      body{background-image=url(home.jpg);background-attachment=fixed}
+      -->
+   </style>
+</head>
+<body text="#000066" bgcolor="#FFFFFF" link="#330033" vlink="#CC33CC" alink="#FF6600" background="home.jpg">
+<font color="#3333FF"><font size=+2><font face="Times New Roman Baltic">US-EPA
+Models-3</font><font face="標楷體"> 教學文件區</font></font></font>
+<div align=right><font face="新細明體"><font color="#3333FF"><font size=-1>最後更新日期：2001/06/19</font></font></font></div>
+
+<hr WIDTH="100%">
+<br><a NAME="開始"></a><font color="#3333FF"><font size=+2><font face="Times New Roman Baltic">NetCDF</font><font face="標楷體">
+共享軟體</font></font></font>
+<blockquote><font color="#000000">在 Models-3 模式中，使用的資料存取介面稱為
+I/O API，其實就是 NetCDF 檔案格式。而由於我們需要瞭解 Models-3 輸出檔案的資料情況，因此對於
+NetCDF 的檔案結構與變數型態需要有比較完整的瞭解。所以在底下的翻譯資料中，需要知道的在</font><font color="#000099">基礎篇</font><font color="#000000">的『</font><font color="#3333FF">簡介</font><font color="#000000">』『</font><font color="#3333FF">前言</font><font color="#000000">』『</font><font color="#3333FF">NetCDF檔案的主要組成成分</font><font color="#000000">』『</font><font color="#3333FF">NetCDF的資料格式</font><font color="#000000">』等部分需要比較詳細的參詳參詳，另外，在</font><font color="#000099">工具篇</font><font color="#000000">裡面有兩個重要工具程式（</font><font color="#3333FF">ncgen</font><font color="#000000">與</font><font color="#3333FF">ncdump</font><font color="#000000">）也需要看一下的！至於</font><font color="#000099">進階篇</font><font color="#000000">主要是針對程式發展者的介紹，有需要再看吧，而且這一部分我翻譯的不是很好，雖然我自己看得懂，但是建議您直接看原文會比較容易進入狀況喔！你也可以到<a href="guidef/guidef-1.html" target="_blank">這裡</a>來看一下原文說明喔！</font>
+<ul><font face="標楷體"><font color="#000099"><font size=+1>基礎篇</font></font></font>
+<ul>
+<li>
+<font color="#000000"><a href="#簡介">簡介</a></font></li>
+
+<li>
+<font color="#000000"><a href="#前言">前言</a></font></li>
+
+<li>
+<font color="#000000"><a href="#組成">NetCDF 檔案的主要組成成分</a></font></li>
+
+<li>
+<font color="#000000"><a href="#data">NetCDF 的資料（Data）格式</a></font></li>
+</ul>
+
+<p><br><font face="標楷體"><font color="#000099"><font size=+1>進階篇（有需要再看，建議直接看原文）</font></font></font>
+<ul>
+<li>
+<font color="#000000"><a href="#fortran_to_Netcdf">以 Fortran 程式建立
+NetCDF 檔案需要的參數</a></font></li>
+
+<li>
+<font color="#000000"><a href="#create">新建、開啟、宣告變數與結束檔案</a></font></li>
+
+<li>
+<font color="#000000"><a href="#dimention">定義 dimention</a></font></li>
+
+<li>
+<font color="#000000"><a href="#variable">建立與取得變數資料</a></font></li>
+
+<li>
+<font color="#000000"><a href="#attribute">建立與取得說明資料</a></font></li>
+
+<li>
+<font color="#000000"><a href="#program">程式範例</a></font></li>
+</ul>
+
+<p><br><font face="標楷體"><font color="#000099"><font size=+1>工具篇</font></font></font>
+<ul>
+<li>
+<font color="#000000"><a href="#utility">NetCDF 檔案的儲存形式</a></font></li>
+
+<li>
+<font color="#000000"><a href="#utility">ncgen</a></font></li>
+
+<li>
+<font color="#000000"><a href="#utility">ncdump</a></font></li>
+</ul>
+
+<p><br><font face="標楷體"><font color="#000099"><font size=+1>其他相關話題喔</font></font></font>
+<ul>
+<li>
+<font color="#000000"><a href="#網站連結">相關網站連結</a></font></li>
+</ul>
+</ul>
+</blockquote>
+
+<hr WIDTH="100%">
+<br><a NAME="簡介"></a><font face="標楷體"><font color="#3333FF"><font size=+2>簡介：</font></font></font>
+<blockquote><font color="#000000">NetCDF(network Common Data Format)最早是由美國國家科學委員會資助之計畫--Unidata
+--所發展，其用意是在Unidata計畫中不同的應用項目下，提供一種可以通用的資料存取方式，資料的形狀包括單點的觀測值、時間序列、規則排列的網格、以及人造衛星或雷達之影像檔案。其自行說明表頭的理念是參照NASA
+Goddart國家太空資料中心在1987年所發表的論文。</font>
+<p><font color="#000000">NetCDF 可簡單的視為一種存取介面，任何使用 NetCDF
+存取格式的檔案就可稱為 NetCDF 檔案；至於 NetCDF 這套軟體的功能，在於提供C、Fortran、C++、Perl、或其他語言I/O的程式庫，以讓程式發展者可以讀寫資料檔案，其本身具有說明的能力、並且可以跨越平台和機器的限制。每一個NetCDF檔案可以含括多維度的、具有名稱的變數，包括長短的整數、單倍與雙倍精度的實數、字元等，且每一個變數都有其自我介紹的資料，包括量度的單位、全名及意義等文字說明，在此摘要性的檔頭之後，才是真正的資料本身。</font>
+<p><font color="#000000">為何 NetCDF 適合於科技技術方面的使用呢？這是因為這個介面是一種多維的資料分佈系統，所以由這個介面所產生的檔案，具有多維的資料格式，當你需要其中的某一筆資料時，程式將不會從第一筆資料讀到你所需要的資料處，而是由
+NetCDF 軟體直接存取那一個資料！如此一來將會大量的降低模式運算時資料存取的時間。例如對於支援
+NetCDF 格式的繪圖軟體來說，只要有此格式的資料檔即可針對任一變數的任一維度或多維度(包括時間)變化進行繪圖，而且不論這個變數的資料是存在檔案中的那個地方，均可直接讀取該值而不用循序讀取在它前面資料後再讀取該值，如此可大大減少繪圖所需的時間。</font>
+<p><font color="#000000">另外，在三維空氣品質模式模擬中，需要讀入的排放源資料庫及空氣品質模式，並非僅讀取一次，模式是一直持續的在讀取與計算。例如你模擬一個七天的事件，總共
+168 個小時，那第一個小時讀入資料後，程式便開始運算，等算完了，模式會再由資料檔讀入第二小時的資料，以此類推，OK！那你知道一般傳統檔案如何讀檔嗎？假設共有10000筆資料，而你要的是200-300及9800-9900這兩段資料，則程式需要由第一筆資料讀到第9900筆資料後，捨棄不必要的
+9700 筆資料後，才可得到你的 200 筆資料。那你曉得 NetCDF 的優點了嗎？沒錯，如上面所述，
+NetCDF 只需要直接讀取 200 筆資料就可以了，對，他可以直接到資料所在的那一個儲存格去將資料取出！但也就是因為這樣，
+NetCDF 所需要的空間是很大的，因為他多了很多的變數宣告項目，與其具有既定的儲存格式所致！</font>
+<p><font color="#000000">Anyway，簡單的說， NetCDF 是一套軟體，也是一種存取介面，這種介面的優點在於『</font><font color="#3333FF">其資料具有說明的檔頭</font><font color="#000000">』，所以資料不會被誤用；而其存取方式為『</font><font color="#3333FF">直接至該筆資料讀取</font><font color="#000000">』，因此可以省去很多不必要的讀取時間；另外，這種檔案是一種可以『</font><font color="#3333FF">跨平台操作</font><font color="#000000">』讀取的格式，因此，不論你是以何種操作系統製作
+NetCDF 檔案，在其他平台之下，還是可以使用這樣的資料檔案的！</font></blockquote>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="前言"></a><font face="標楷體"><font color="#3333FF"><font size=+2>前言：</font></font></font>
+<blockquote><font color="#000000">NetCDF 為 Network Common Data Form 的縮寫，為一甚為有用的科技資料處理介面，其資料取出輸入的方法與傳統的由檔頭讀至該筆使用
+data 處不同，故其介面較新，且需要使用特殊的程式讀寫，以下將主要介紹以 Fortran
+程式語言建置 NetCDF 的方法，尤其當中 NetCDF 的檔案格式最為重要！請詳細看一下。這是因為
+Models-3 主要就是使用 NetCDF 的檔案格式，所以你可以不知道 NetCDF 如何建置，但是一定要曉得如何將
+NetCDF 內的資料讀出來看！</font>
+<p><font color="#000000">開宗明義的說， NetCDF 主要設計的目的，即在於增進儲存、讀取以及方便多維（array
+is an n-dimensional）資料的存取的一種檔案『介面』。目前 NetCDF 已經開發至相當多的操作平台（Unix,
+WindowsNT等等，Linux也有支援）。至於 NetCDF 的檔案結構將在後續的章節說明之。</font>
+<p><font color="#000000">說到最重要的執行效能（performance），如前所述，由於傳統的檔案讀取方式實在太慢了，並且，對於多變數的檔案（例如一個排放源資料檔中，將包含了
+PM、VOC、SOx、NOx及其他林林總總的污染物變數）其讀取方式很容易出錯。這是因為在傳統的檔案中，每一筆資料都必須要在『特定的』相關位置，不可隨意變動，否則在另一個操作介面或者使用者在使用時，將完全看不懂這個檔案裡頭數據的意義！並且可能造成程式的誤判！而</font><font color="#3333FF">在
+NetCDF 當中，由於其存取介面是使用 direct （直接）至該相關位置存取，並且每一筆資料都有對應的
+ID，所以 PM 的資料絕對不會被程式當作 SOx 濃度使用！即使另一個使用者建立的排放量
+NetCDF 格式的檔案中 PM 所放置的與原先的並不相同，那也完全不會影響程式的讀取資料！</font><font color="#000000">因此，
+NetCDF 不但可以增進資料的存取時間，亦且也可以幫助使用者瞭解資料內容，並且也不易有錯誤資料發生。不過，若是當你的檔案中僅有單一物種資料，那由於
+NetCDF 是一筆一筆去讀資料，而傳統讀檔的連續讀取會比較快速！因此對於較為簡單的檔案，
+NetCDF 執行效能反而是不如傳統的讀檔方式的，這點請一定要搞清楚！</font>
+<p><font color="#000000">其實在 MM5 的檔案格式中，也是與 NetCDF 具有相同的功能，亦即每一筆資料都有對應的
+ID以及該變數的簡短說明（包括該變數的單位），所以對於資料的保存是很有用的。另外，由於
+NetCDF 可以跨平台操作，因此你在 Unix 建立的檔案，拿到 windows NT 仍然是可以使用的哩！很棒對不對！</font>
+<p><font color="#000000">說了這樣多，但是 NetCDF 仍然是有缺點的。</font>
+<ul>
+<li>
+<font color="#000000">由於 NetCDF 檔案需要宣告變數，每一種變數都有其特定的儲存格，而變數僅有六種，8-,8-,16-,32-,32-,64-bit（這一部分將在<a href="#data">變數格式</a>中說明），所以你的
+NetCDF 檔案通常要比傳統的檔案來的大。例如你的變數為 11-bit 的實數，但實數僅有
+32-及64-bit 的變數，因此你的變數便需宣告為 32-bit 的變數，所以檔案在無形之中就會變大啦！</font></li>
+
+<li>
+<font color="#000000">由於 NetCDF 啟始設計的環境並不好，（可能是在 MS-DOS
+的 FAT 表下設計的）所以對於每一個檔案的資料均只能到達 2GB 的限制，亦即是當你的檔案資料太大，大到超過
+2GB 則 NetCDF 就會顯示錯誤啦！這也是下一階段 NetCDF 發展團隊努力想要克服的障礙！</font></li>
+</ul>
+</blockquote>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="組成"></a><font color="#3333FF"><font size=+2><font face="Times New Roman Baltic">NetCDF</font><font face="標楷體">
+檔案的主要組成：</font></font></font>
+<blockquote><font color="#000000">任何一個 NetCDF 的檔案均含有下列幾個部分：</font>
+<ul>
+<li>
+<font color="#000000">dimensions：多維資料結構，例如 latitude, longitude,
+layers, and time</font></li>
+
+<li>
+<font color="#000000">variables：各種變數，例如 temperature, RH, latitude,
+longitude</font></li>
+
+<li>
+<font color="#000000">attributes：輔助記憶的說明檔頭</font></li>
+
+<li>
+<font color="#000000">data：主要的資料部分。</font></li>
+</ul>
+<font color="#000000">我們可以使用下面這一個檔案來做說明：在下表中，</font><font color="#3333FF">藍色的字為鳥哥附加的說明，不包括在檔案中</font><font color="#000000">！</font>
+<br>&nbsp;
+<table BORDER COLS=1 WIDTH="90%" >
+<tr>
+<td><tt><font color="#000000">netcdf example_1 {&nbsp; // example of CDL
+notation for a netCDF dataset&nbsp;</font></tt>
+<br><tt><font color="#3333FF">這一行只是 Title 的說明，告訴你這是一個 NetCDF
+檔案，</font><font color="#000000"> </font><font color="#3333FF">接在 //
+之後的是說明的資料</font></tt>
+<p><tt><font color="#000000">dimensions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// dimension names and lengths are declared first&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lat = 5, lon = 10, level = 4, time = unlimited;</font></tt>
+<br><tt><font color="#3333FF">宣告陣列的地方，上面宣布共有5個緯度(lat)、10個經度、四層、及時間等多維陣列</font></tt>
+<br><tt><font color="#3333FF">要注意的地方是，time 為 unlimited 也就是說，關於時間的陣列可一直增加下去！</font></tt>
+<p><tt><font color="#000000">variables:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// variable types, names, shapes, attributes</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+float&nbsp;&nbsp; temp(time,level,lat,lon);</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+temp:long_name&nbsp;&nbsp;&nbsp;&nbsp; = "temperature";</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+temp:units&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "celsius";</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+float&nbsp;&nbsp; rh(time,lat,lon);</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+rh:long_name = "relative humidity";</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+rh:valid_range = 0.0, 1.0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // min and max</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int&nbsp;&nbsp;&nbsp;&nbsp; lat(lat), lon(lon), level(level);</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lat:units&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "degrees_north";</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lon:units&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "degrees_east";</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+level:units&nbsp;&nbsp;&nbsp;&nbsp; = "millibars";</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+short&nbsp;&nbsp; time(time);</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+time:units&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "hours since 1996-1-1";</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// global attributes</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+:source = "Fictional Model Output";</font></tt>
+<br><tt><font color="#3333FF">宣告變數的地方，其中要注意的是：</font></tt>
+<br><tt><font color="#3333FF">float、int 及 short 是變數的型態， float
+為小數點、int 為整數，這一部分會在<a href="#data">後面</a>詳細說明。</font></tt>
+<br><tt><font color="#3333FF">至於變數名稱則有 temp, rh, lat, lon, level,
+time等，並且定義 temp 為時間、層、經緯度的函數，</font></tt>
+<br><tt><font color="#3333FF">rh 為時間、經緯度的函數等等</font></tt>
+<br><tt><font color="#3333FF">另外，在每個變數之下均有 long_name 及 units
+的說明，這就是此一變數的說明檔頭啦！</font></tt>
+<br><tt><font color="#3333FF">至於 //global attributes 指的是這個檔案的主要參數喔！（例如網格數、原點座標、這個檔案的建立時間等等）</font></tt>
+<p><tt><font color="#000000">data:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// optional data assignments</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+level&nbsp;&nbsp; = 1000, 850, 700, 500;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lat&nbsp;&nbsp;&nbsp;&nbsp; = 20, 30, 40, 50, 60;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lon&nbsp;&nbsp;&nbsp;&nbsp; = -160,-140,-118,-96,-84,-52,-45,-35,-25,-15;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+time&nbsp;&nbsp;&nbsp;
+= 12;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+rh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =.5,.2,.4,.2,.3,.2,.4,.5,.6,.7,</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.1,.3,.1,.1,.1,.1,.5,.7,.8,.8,</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.1,.2,.2,.2,.2,.5,.7,.8,.9,.9,</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.1,.2,.3,.3,.3,.3,.7,.8,.9,.9,</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0,.1,.2,.4,.4,.4,.4,.7,.9,.9;</font></tt>
+<br><tt><font color="#000000">}</font></tt>
+<br><tt><font color="#3333FF">這是最後的部分，就是實體資料的存放處啦。level
+共有四層，分別為1000,850,700與500，</font></tt>
+<br><tt><font color="#3333FF">以下的 lat 與 lon 均相同意思！</font></tt>
+<br><tt><font color="#3333FF">至於 rh 則有 50 個資料，由於 rh 是（時間、經緯度）函數，所以在經緯度共分成50格（5x10）</font></tt>
+<br><tt><font color="#3333FF">而時間只有一個（12小時）的情況下，因此 rh
+就有 50x1 =50&nbsp; 筆資料啦！</font></tt></td>
+</tr>
+</table>
+
+<p><font color="#000000">請注意，</font><font color="#3333FF">上表是以
+ASCII 碼的型態來表示 NetCDF 的格式</font><font color="#000000">，實際的
+NetCDF 格式並非如此，必須藉由 NetCDF 軟體的轉換程式才能將上面的資料轉成
+NetCDF 格式檔！不過由於上面的 ASCII 碼檔案可以經由 NetCDF 的工具軟體直接轉換成
+NetCDF 檔案，所以與上面的檔案具有相同格式的 files 就被稱為 </font><font color="#3333FF">Network
+Common Data Form Language (CDL)</font><font color="#000000"> 檔案啦！</font>
+<p><font color="#000000">在<a href="../models3-04-install.html#Netcdf">安裝
+NetCDF</a> 的那一節中，我們提到了 setup NetCDF 最終會產生兩個有用的工具程式，分別是
+</font><font color="#3333FF">ncgen</font><font color="#000000">
+及 </font><font color="#3333FF">ncdump</font><font color="#000000"> 兩個程式。其中，
+ncgen 可以將上面這一種 CDL 檔案 (</font><font color="#3333FF">其實就是
+ASCII 碼檔案) </font><font color="#000000">直接轉成 NetCDF 格式的檔案，所以如果你不懂如何以
+Fortran 寫程式來轉換 NetCDF 檔，則可以利用文書編輯軟體寫出上面這一種 CDL
+檔案後，在 Unix 平台下，直接將檔案轉換！另外，如果你只是要看看 NetCDF 檔案的內容，則可以使用
+ncdump 來看檔案！這兩個檔案很常用，尤其是 ncdump 更是常用的不得了！至於使用方法，會在後面再提到！</font>
+<p><font color="#000000">另外，要注意的是，由於 NetCDF 資料檔中共分為 variable
+及 attributes 兩種， attributes 可能會被包含在 variable 中，但是 attributes
+不可能含有 variable ，且 attributes 沒有比較有用的變數型態，因此在 user
+menual 中作者強烈建議科技資料使用 variables 的型態！</font></blockquote>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="data"></a><font color="#3333FF"><font size=+2><font face="Times New Roman Baltic">NetCDF</font><font face="標楷體">
+的資料（</font><font face="Times New Roman Baltic">Data</font><font face="標楷體">）格式：</font></font></font>
+<blockquote><font color="#000000">在前一節有提到 NetCDF 的主要內容，而其內容中最重要的部分大概就屬
+variable 的型態啦！ NetCDF 的變數型態主要有六種，分別如下：</font>
+<br>&nbsp;
+<table BORDER WIDTH="90%" >
+<tr>
+<td WIDTH="20%"><font color="#000000">char</font></td>
+
+<td WIDTH="55%"><font color="#000000">8-bit characters intended for representing
+text.</font></td>
+
+<td><font color="#000000">2<sup>8 </sup>大小的字元</font></td>
+</tr>
+
+<tr>
+<td><font color="#000000">byte</font></td>
+
+<td><font color="#000000">8-bit signed or unsigned integers.</font></td>
+
+<td><font color="#000000">2<sup>8</sup>大小的整數</font></td>
+</tr>
+
+<tr>
+<td><font color="#000000">short</font></td>
+
+<td><font color="#000000">16-bit signed integers.</font></td>
+
+<td><font color="#000000">2<sup>16</sup>大小的短形整數</font></td>
+</tr>
+
+<tr>
+<td><font color="#000000">int</font></td>
+
+<td><font color="#000000">32-bit signed integers.</font></td>
+
+<td><font color="#000000">2<sup>32</sup>大小的長形整數</font></td>
+</tr>
+
+<tr>
+<td><font color="#000000">float or real</font></td>
+
+<td><font color="#000000">32-bit IEEE floating-point.</font></td>
+
+<td><font color="#000000">2<sup>32</sup>大小的浮點數</font>
+<br><font color="#000000">單精倍數</font></td>
+</tr>
+
+<tr>
+<td><font color="#000000">double</font></td>
+
+<td><font color="#000000">64-bit IEEE floating-point.</font></td>
+
+<td><font color="#000000">2<sup>64</sup>大小的倍精倍數</font></td>
+</tr>
+</table>
+
+<p><font color="#000000">上面是主要的 NetCDF 資料變數，而且每一種變數均有既定的儲存格式，例如
+char 變數中，就僅有 2<sup>8</sup> 個字元的儲存空間！ int 就只能儲存整數型態的資料等等，因此變數的宣告與你原本資料的型態相關性就很重大！這是因為如果你的變數型態定義錯誤的話，可能會造成你的資料的『準確度』完全不對！並且程式也不會顯示錯誤！這很嚴重。假設你的原始資料稱為
+external data 而經由 NetCDF 轉換後儲存在 NetCDF 檔案的資料稱為 internal
+data，</font><font color="#3333FF">若你的 external data 為 0.13245，但是你對這個資料宣告的變數型態為
+byte 時，則程式會將 0.13245 存成 『0』 </font><font color="#000000">！小數點後的資料完全不見了！！並且此一狀況在程式執行中並不會產生
+error message（因為實際上資料並沒有錯誤，有誤的只是資料的準確度而已）。此外，如果你的資料為
+10<sup>25</sup> 而你的變數宣告為 byte ，哈哈！那你的 data 將完全不準確啦！</font><font color="#3333FF">因此你要針對你的資料去進行變數的宣告。</font><font color="#000000">當然，如果你害怕變數宣告錯誤造成你的資料準確度的問題的話，這裡提供一個建議，</font><font color="#3333FF">那就是將你所有的數值資料均宣告為儲存空間最大的
+double 這一個變數型態</font><font color="#000000">，那你的資料一定不會錯！但是相對的，這樣一來你的
+NetCDF 檔案就會無形之中增大很多，你可以想像的到，將 1 以 1.0000000000.......（n個0）型態儲存，那樣的空間一定是佔去很大啦。</font></blockquote>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="fortran_to_Netcdf"></a><font color="#3333FF"><font size=+2><font face="標楷體">進階一：以</font><font face="Times New Roman Baltic">Fortran</font><font face="標楷體">程式建立</font><font face="Times New Roman Baltic">NetCDF</font><font face="標楷體">檔案：</font></font></font>
+<blockquote><font color="#000000">說穿了，使用 Fortran 程式語言要來寫 NetCDF
+的檔案系統的話，是一定要使用到 NetCDF 的資料庫（Library）的，他的 Library
+不是很好懂，基本上，我們也不是很需要瞭解啦（如果你只是要會跑 Models-3 而已的話），就連原作者也說即使你不懂
+NetCDF 的 Library 也沒關係，因為還有 ncgen 這種小工具可以讓你直接將檔案寫入
+NetCDF 當中。所以這一節以及底下連續的幾個小節，都不是很需要努力的看，不過在講到
+</font><font color="#3333FF"><a href="#utility">ncdump</a></font><font color="#000000">
+的使用方法那一節就要好好的看看囉！</font>
+<p><font color="#000000">我們可以使用 Fortran 寫程式來建立、讀取與增加變數於
+NetCDF 檔案，建立的方法共分為四種，分別為：建立新檔案、讀取已知變數的舊檔案、讀取未知變數的舊檔案及增加變數進入檔案中等四種。本節主要僅在說明需要的變數名稱，詳細的使用方法將在後面繼續說明之。</font>
+<p><font color="#000000">以下以表稍微解釋所需要的變數名稱（在 Fortran 語言中的使用喔）</font>
+<br>&nbsp;
+<table BORDER WIDTH="90%" >
+<tr>
+<td WIDTH="30%"><font color="#000000">建立新檔案需要的變數</font></td>
+
+<td><font color="#000000">&nbsp;<tt>&nbsp;&nbsp; </tt></font><tt><font color="#3333FF">NF_CREATE</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! create netCDF dataset: enter define mode</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_DEF_DIM</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! define dimensions: from name and length</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_DEF_VAR</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! define variables: from name, type, dims</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_PUT_ATT</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! assign attribute values</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_ENDDEF</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! end definitions: leave define mode</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_PUT_VAR</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! provide values for variable</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_CLOSE</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! close: save new netCDF dataset</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">讀取已知變數的舊檔案</font></td>
+
+<td><tt><font color="#000000">&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_OPEN</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! open existing netCDF dataset</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_INQ_DIMID</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get dimension IDs</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_INQ_VARID</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get variable IDs</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_GET_ATT</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get attribute values</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3333FF">
+NF_GET_VAR</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get values of variables</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_CLOSE&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! close netCDF dataset</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">讀取未知變數的舊檔案</font></td>
+
+<td><tt><font color="#000000">&nbsp;&nbsp;&nbsp;</font><font color="#3333FF">
+NF_OPEN&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! open existing netCDF dataset</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_INQ</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! find out what is in it</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_INQ_DIM</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get dimension names, lengths</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_INQ_VAR</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get variable names, types, shapes</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_INQ_ATTNAME&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;
+! get attribute names</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_INQ_ATT&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get attribute values</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3333FF">
+NF_GET_ATT</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get attribute values</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_GET_VAR&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! get values of variables</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_CLOSE&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! close netCDF dataset</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">增加變數於舊檔案中</font></td>
+
+<td><tt><font color="#000000">&nbsp;&nbsp;</font><font color="#3333FF">&nbsp;
+NF_OPEN&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! open existing netCDF dataset</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_REDEF</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! put it into define mode</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_DEF_DIM&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! define additional dimensions (if any)</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_DEF_VAR&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! define additional variables (if any)</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_PUT_ATT</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! define other attributes (if any)</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;</font><font color="#3333FF">
+NF_ENDDEF</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! check definitions, leave define mode</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#3333FF">NF_PUT_VAR&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! provide new variable values</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...&nbsp;</font></tt>
+<br><tt><font color="#000000">&nbsp;&nbsp;&nbsp;</font><font color="#3333FF">
+NF_CLOSE&nbsp;&nbsp;</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+! close netCDF dataset</font></tt></td>
+</tr>
+</table>
+
+<p><font color="#000000">基本上你可以將每一種方法都區分為兩個部分，一個是定義區（define）另一個是資料寫入區（data
+writing）。如上表的『建立新檔』中，先以 </font><font color="#3333FF">NF_CREATE</font><font color="#000000">
+建立一個檔案後，以 </font><font color="#3333FF">NF_DEF_DIM</font><font color="#000000">,
+</font><font color="#3333FF">NF_DEF_VAR</font><font color="#000000">,
+</font><font color="#3333FF">NF_PUT_ATT</font><font color="#000000">
+宣告陣列、變數及放置相關的說明後，再以
+</font><font color="#3333FF">NF_ENDDEF</font><font color="#000000">
+關閉定義區，請注意，一定要『</font><font color="#3333FF">先在定義區宣告一些變數後，並關閉定義區，才可以往下輸入資料</font><font color="#000000">！』。在完成了變數定義之後，以
+</font><font color="#3333FF">NF_PUT_VAR</font><font color="#000000">
+一筆一筆建立資料的輸入，待資料全部輸入完畢後，方以</font><font color="#3333FF">
+NF_CLOSE</font><font color="#000000"> 關閉這一個程式！原則上，建立檔案的步驟就是這樣囉。那詳細的執行流程會在後面再加以介紹。</font>
+<p><font color="#000000">在完成了程式的編寫之後，最重要的當然就是編譯與連結檔案囉（compile
+and link）！在 Models-3 的 scripts 中常會看到相關的 NetCDF 的連結指令，所以這裡你可以稍微看一下，以瞭解為何
+Models-3 的程式要這樣寫！</font>
+<p><font color="#000000">目的：在一個檔名為 myprogram.f 的 Fortran 檔案中，需要將
+include 檔案包含進這個程式；</font>
+<br><font color="#000000">語法： </font><tt><u><font color="#3333FF">f77&nbsp;
+-c&nbsp; -I/usr/local/include&nbsp; myprogram.f</font></u></tt>
+<br><font color="#000000">說明：上面的語法中， -c&nbsp; -I 為 fortran 的
+flags，</font><font color="#3333FF">-c 表示只要編譯不要做成執行檔</font><font color="#000000">，所以執行上面這一行之後，你會產生一個名為
+myprogram.o 的檔案；至於 /usr/local/include 則是你的 NetCDF 的所在目錄下的檔案（如果您是用鳥哥教你的安裝方法安裝的話）！之後則是要將剛剛的編譯碼做成執行檔啦！通常你可以利用下面這兩種寫法來完成：</font>
+<p><font color="#000000">語法一：</font><tt><font color="#3333FF">f77&nbsp;
+-o&nbsp; myprogram&nbsp; myprogram.o&nbsp; -L/usr/local/lib&nbsp; -lnetcdf</font></tt>
+<br><font color="#000000">語法二：</font><tt><font color="#3333FF">f77&nbsp;
+-o&nbsp; myprogram&nbsp; myprogram.o&nbsp; -l/usr/local/lib/libnetcdf</font></tt>
+<p><font color="#000000">那就可以得到一個名為 myprogram 的執行檔囉！這兩種方法都可以將
+NetCDF 的 Library 用在你的程式中，而 語法一 是較常於 Models-3 的程式中看到的一種方法！</font></blockquote>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="create"></a><font color="#3333FF"><font size=+2><font face="標楷體">進階二：新建、開啟、變數宣告與結束檔案的
+</font><font face="Times New Roman Baltic">Fortran</font><font face="標楷體">
+程式：</font></font></font>
+<ol><font color="#000000">如同前一節（進階一）提到的開啟檔案與宣告變數的方法，這一節主要將介紹檔案開啟與變數宣告的指令與其參數。另外，由於使用的是
+NetCDF 的參數，所以在每個 Fortran 程式之前均需要加入 『 include&nbsp; 'netcdf.inc'』這一行字。其中
+netcdf.inc 這個檔案是你在安裝完了 NetCDF 後所產生的檔案，放置在『 /usr/local/include
+』中！</font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_STRERROR(status)</font></li>
+
+<br><font color="#000000">這個指令主要在提供你除錯的錯誤訊息！其中 status
+為你程式執行錯誤時所傳回來的數字，為整數！你可以寫一個如下的副程式在每一個檔案的結尾處，將可以讓你的程式具有輸出錯誤訊息的功能！</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066"><font size=+1>subroutine&nbsp; handle_err(status)</font></font></tt>
+<br><tt><font color="#000066"><font size=+1>integer&nbsp; status</font></font></tt>
+<br><tt><font color="#000066"><font size=+1>if&nbsp; (status&nbsp; .NE.&nbsp;
+nf_noerr) then</font></font></tt>
+<br><tt><font color="#000066"><font size=+1>&nbsp;&nbsp;&nbsp; print&nbsp;
+*, nf_strerror(status)</font></font></tt>
+<br><tt><font color="#000066"><font size=+1>&nbsp;&nbsp;&nbsp; stop&nbsp;
+'stopped'</font></font></tt>
+<br><tt><font color="#000066"><font size=+1>endif</font></font></tt>
+<br><tt><font color="#000066"><font size=+1>end</font></font></tt>
+<br><font color="#000000"><font size=+1>-----</font></font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_INQ_LIBVERS()</font></li>
+
+<br><font color="#000000">取得你的 NetCDF 程式版本，語法為：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">print&nbsp; *, nf_inq_libvers()</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_CREATE('filename', mode, ncid)</font><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;==極重要，新增加檔案用</font></li>
+
+<br><font color="#000000">若你要建立一個名為 netcdf.ncf 的 NetCDF 檔案，則你需要定義這個檔案的開啟號碼(ncid
+為整數)，與其寫入的方式(mode，分為 nf_clobber, nf_noclobber, nf_share)。要注意的是，ncid
+雖然只是個整數，不過這個數字是由程式自動判斷給的，所以不可以設定為固定！必須為變數型態！一般而言，你可以這樣寫：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">integer&nbsp; status, ncid</font></tt>
+<br><tt><font color="#000066">status=nf_create('netcdf.ncf', nf_clobber,
+ncid)</font></tt>
+<br><tt><font color="#000066">if (status&nbsp; .NE.&nbsp; nf_noerr)&nbsp;
+call&nbsp; handle_err(status) </font><font color="#3333FF">&lt;==這裡說明有錯誤就執行
+handle_err 這個副程式</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_OPEN('filename', mode, ncid)&nbsp;</font><font color="#000000">&nbsp;
+&lt;==極重要，開啟舊檔案用</font></li>
+
+<br><font color="#000000">如果是開啟一個已存在的檔案的話，則使用 nf_open
+這個指令啦！只有 mode 與 nf_create 不同，其主要分為 nf_write (可讀寫),
+nf_nowrite (唯讀檔，這是預設值), 及 nf_share三個主要模式。以下說明開啟唯讀檔的方法：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_open('netcdf.ncf', nf_nowrite,
+ncid)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_REDEF(ncid)</font><font color="#000000">&nbsp;
+&lt;==與 NF_OPEN 搭配使用</font></li>
+
+<br><font color="#000000">這個指令是用在當你要在一個已存在的檔案中加入新變數時使用的！使用語法為：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_redef(ncid)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_INQ(ncid, ndims, nvars, ngatts, unlimdimid)</font></li>
+
+<br><font color="#000000">這個指令用在讀取一個已存在檔案的變數、層數、與說明檔數目，所以當然是與
+nf_open 有關囉！基本上與讀取檔較為相關。</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_inq(ncid, ndims, nvars, ngatts,
+unlimdimid)</font></tt>
+<br><tt><font color="#000066">write(*,*), ndims, nvars, ngatts, unlimdimid</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_ENDDEF(ncid)</font></li>
+
+<br><font color="#000000">這指令很重要，前面一章提過一個 fortran 程式可分為：變數宣告區與資料區，而變數宣告區『一定』要關閉之後才能進行資料的輸入！所以宣告完變數之後一定要有這個指令才行：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_enddef(ncid)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_CLOSE(ncid)</font></li>
+
+<br><font color="#000000">這個參數可下可不下，不過在你完成了一個 NetCDF
+的工作之後，最後還是下達這個指令，以使檔案關閉！</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_close(ncid)</font></tt>
+<br><tt><font color="#000066">-----</font></tt></ol>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="dimention"></a><font color="#3333FF"><font size=+2><font face="標楷體">進階三：定義
+</font><font face="Times New Roman Baltic">dimention</font><font face="標楷體">
+指令：</font></font></font>
+<ol><font color="#000000">如前一章（進階二）所述，在建立或開啟了一個檔案之後，再來就是要宣告維數(dimention)啦！維數的宣告指令如下：</font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_DEF_DIM(ncid, name, len, dimid)
+</font><font color="#000000">&lt;==與
+nf_create 搭配</font></li>
+
+<br><font color="#000000">這個指令主要目的為：在開啟的號碼為 ncid 的檔案中，增加一個名為
+name 的維數，其個數為 len 個，並傳回來 ID 為 dimid，注意，這裡的 dimid
+也必須是變數喔！如果在第一號檔案中增加一個 lat 的維數，個數18個，並增加一個
+rec 維數，個數可無限增加，則分別可寫成：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_def_dim(ncid, 'lat', 18, latid)</font></tt>
+<br><tt><font color="#000066">status=nf_def_dim(ncid, 'rec', nf_unlimited,
+recid)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_INQ_DIMID(ncid, name, dimid)</font></li>
+
+<br><font color="#000000">這個檔案主要與 nf_open 搭配，目的在取得已存在檔案的維數的
+ID，這是因為在每個維數中均有其代號（就是 ID），透過這個代號可以將相關的檔案訊息讀入！所以在讀取一個已知檔案時，通常需要這個指令喔！如下面的程式中若與上面一個指令相配合！</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_inq_dimid(ncid, 'lat', LATID)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_INQ_DIM(ncid, dimid, name, len)</font></li>
+
+<br><font color="#000000">這個程式一定是與 nf_inq_dimid 配合使用的，由
+nf_inq_dimid 取得維數的代號之後，以這個指令將此維數(dimention)的訊息取得之。與上面的程式相配合，由下面的指令可以發現
+name='lat', len=18。</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_inq_dim(ncid, LATID, name, len)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_RENAME_DIM(ncid, dimid, name)</font></li>
+
+<br><font color="#000000">這是一個可以改變維數名稱的指令，與上面的程式相配合的話，則可以將
+lat 改成 latitude 的維數名稱：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_rename_dim(ncid, LATID, 'latitude')</font></tt>
+<br><tt><font color="#000066">-----</font></tt></ol>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="variable"></a><font face="標楷體"><font color="#3333FF"><font size=+2>進階四：建立與取得變數資料：</font></font></font>
+<ol><font color="#000000">在宣告完了維數之後，當然就是變數的宣告與寫入囉！基本上變數的定義用
+nf_def_xxx, 而變數的調查使用 nf_inq_xxx, 變數的寫入使用 nf_put_xxx, 而變數的讀取則使用
+nf_get_xxx，以下分別介紹之：</font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_DEF_VAR(ncid, name, xtype, nvdims, vdims, varid)&nbsp;&nbsp;
+宣告變數</font></li>
+
+<br><font color="#000000">這個指令在定義變數，上式中，name 為變數名稱，xtype為變數的型態，還記得六種型態吧？分別是：nf_byte,
+nf_char, nf_short, nf_int, nf_float, nf_double 等六種。nvdims則是這個變數的內變數為多少，vdims則是變數的函數相對應的維數ID，varid則是這個變數的代碼啦！假設我們要記錄一個相對濕度的變數，其根據經緯度及時間（三個內變數），所以
+vdims 就必須與 經度、緯度、時間的ID相同啦！且其變數代碼設為 VARID ，則可以寫成：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_creat('netcdf.ncf, nf_noclobber,
+ncid)</font></tt>
+<br><tt><font color="#000066">status=nf_def_dim(ncid, 'lat', 5, LATID)</font></tt>
+<br><tt><font color="#000066">status=nf_def_dim(ncid, 'lon', 10, LONID)</font></tt>
+<br><tt><font color="#000066">status=nf_def_dim(ncid, 'time', nf_unlimited,
+TIMEID)</font></tt>
+<br><tt><font color="#000066">integer&nbsp; RHDIMS(3)</font></tt>
+<br><tt><font color="#000066">RHDIMS(1) = LONID</font></tt>
+<br><tt><font color="#000066">RHDIMS(2) = LATID</font></tt>
+<br><tt><font color="#000066">RHDIMS(3) = TIMEID</font></tt>
+<br><tt><font color="#000066">status=nf_def_var(ncid, 'rh', nf_double,
+3, RHDIMS, RHID)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_INQ_VARID(ncid, 'name', varid)&nbsp;&nbsp;&nbsp;
+調查變數代碼</font></li>
+
+<br><font color="#000000">這個指令的作用在取得變數的 ID ，基本上與前一節（進階三）的
+nf_inq_dimid 相似。在取得了變數的 ID 之後才可以取得變數的其他資訊，所以這個指令與下一個指令通常適合在一起寫的！語法為：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_inq_varid(ncid, 'lat', LATID)</font></tt>
+<br><tt><font color="#000066">print *, LATID&nbsp; &lt;== 可以列出從上個指令取得的變數代碼！</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_INQ_VAR(ncid, varid, 'name', xtype, ndims, dimids,
+natts)</font></li>
+
+<br><font color="#000000">根據 ncid 與 varid （前一個指令得到的）兩個資料，便可取得
+xtype, ndims, dimids, natts 的資訊！語法為：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_inq_var(ncid, LATID, latname, lattype,
+nlat, latdims, latnatts)</font></tt>
+<br><tt><font color="#000066">write(*,*), latname, lattype, nlat, latdims,
+latnatts</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_PUT_VAR1_type(ncid, varid, index(x), type_val)&nbsp;&nbsp;
+寫入變數</font></li>
+
+<br><font color="#000000">這個指令在將你的『</font><font color="#990000">一筆資料</font><font color="#000000">』『讀入』資料儲存區囉！是很重要的一個指令！其中，type
+為六種資料型態的名稱，分別為『TEXT, INT1, INT2, INT, REAL, DOUBLE』六種。至於
+index 則是一個陣列，指出變數要存的地方，下面的指令更重要喔！可以去看看！在這個指令的語法：若我們要記錄三個相對濕度進入檔案中，且三個相對濕度都是
+0.5 ，則：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">integet&nbsp; RHINDX(3)</font></tt>
+<br><tt><font color="#000066">data&nbsp; RHINDX&nbsp; /4, 3, 2/</font></tt>
+<br><tt><font color="#000066">statuse=nf_put_var1_double(ncid, RHID, RHINDX,
+0.5)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_PUT_VAR_type(ncid, varid, type_var(x))</font></li>
+
+<br><font color="#000000">這個指令比剛剛的更常使用在一個新建立的檔案中，因為他是將『</font><font color="#990000">所有的資料陣列均寫入檔案中</font><font color="#000000">』的一個指令！type
+的型態與上個指令相同。假設我們要寫入一個三維陣列函數（相對濕度），你可以這樣寫：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">double&nbsp; rhvar(ilon, ilat, itime)</font></tt>
+<br><tt><font color="#000066">do 10 ilon=1, lons</font></tt>
+<br><tt><font color="#000066">&nbsp;&nbsp;&nbsp;&nbsp; do 10 ilat=1, lats</font></tt>
+<br><tt><font color="#000066">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+do 10 itime=1, times</font></tt>
+<br><tt><font color="#000066">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+rhvar(ilon, ilat, itime)=0.5</font></tt>
+<br><tt><font color="#000066">10 continue</font></tt>
+<br><tt><font color="#000066">status=nf_put_var_double(ncid, RHID, rhvar)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_PUT_VARA_type(ncid, varid, start(x), count(x),
+type_var(x))</font></li>
+
+<br><font color="#000000">這個指令在於寫入一部分資料進入一個 array 中。注意！這個
+array 的維數要與已存在的檔案相同，你可以與下一個指令相配合著看！</font><font color="#990000">這個指令比較常用在新增加或取代一部分資料於一個已存在的檔案中</font><font color="#000000">。其中，start(x)指開始寫入的位置，count(x)則是寫入的個數！與上一個指令的範例相配合，我們可以發現
+rhvar 為一個三維的陣列，所以 start 與 count 都需要輸入三個變數啟始與個數值。若由第1個寫起，共寫了
+lons, lats, times 個，則：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">integer&nbsp; start(3), count(3)</font></tt>
+<br><tt><font color="#000066">data&nbsp; start&nbsp; /1, 1, 1/</font></tt>
+<br><tt><font color="#000066">data&nbsp; count&nbsp; /lons, lats, times/</font></tt>
+<br><tt><font color="#000066">status=nf_put_vara_double(ncid, RHID, start,
+count, rhvar)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_PUT_VARS_type(ncid, varid, start(x), count(x),
+stride(x), type_var(x))</font></li>
+
+<br><font color="#000000">配合上一個指令，這個指令僅寫入一個比原來的陣列(array)還要小的陣列中，更常用於取代一個已存在的檔案中的資料。例如上一個指令的範例中
+rhvar 為三維變數，我們要改變其中兩個維數，則可以寫成：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">integer&nbsp; start(2), count(2), stride(2)</font></tt>
+<br><tt><font color="#000066">statuse=nf_put_vars_real(ncid, RHID, start,
+count, stride, rh)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_PUT_VARM_type(ncid, varid, start(x), count(x),
+staride(x), imap(x), type_var(x))</font></li>
+
+<br><font color="#000000">這個指令我看不太懂，因為 map 的定義我並不明瞭之故！不過，基本上儲存變數的方法以
+nf_put_var, nf_put_vara, nf_put_var1 這三個指令較為重要！</font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_GET_VAR1_type(ncid, varid, index(x), type_var)</font></li>
+
+<br><font color="#000000">這個指令在取得某變數的『</font><font color="#990000">一筆資料</font><font color="#000000">』，例如
+rhval 這個三維資料中，我們要取得 rhval(4,3,2) 這個變數值，你可以這樣寫：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">integet&nbsp; rhidx(3)</font></tt>
+<br><tt><font color="#000066">data&nbsp; rhidx&nbsp; /4, 3, 2/</font></tt>
+<br><tt><font color="#000066">statuse=nf_get_var1_double(ncid, RHID, rhidx,
+rhval)</font></tt>
+<br><tt><font color="#000066">print *, rhval</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_GET_VAR_type(ncid, varid, type_var(x))</font></li>
+
+<br><font color="#000000">這個指令則是『</font><font color="#990000">取得某一變數的全部資料</font><font color="#000000">』。其中
+type_var(x) 是一個陣列囉！</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_get_var_double(ncid, RHID, rhval)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_GET_VARA_type(ncid, varid, start(x), count(x),
+type_var(x))</font></li>
+
+<br><font color="#000000">同樣的，這個指令就是取得某一個陣列區域內的變數資料啦！用法與前面
+nf_put_vara_type 相同哩！</font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_GET_VARS_type(ncid, varid, start(x), count(x),
+stride(x), type_var(x))</font></li>
+
+<br><font color="#000000">這個也應該不用再說了吧！就是取得更小的陣列的資料啦！</font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_RENAME_VAR(ncid, varid, 'newname')</font></li>
+
+<br><font color="#000000">這個指令在更改一個變數的名稱，需要與 nf_redef,
+nf_inq_varid 配合寫入，如下所示：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=open('netcdf.ncf', nf_write, ncid)</font></tt>
+<br><tt><font color="#000066">status=nf_redef(ncid)</font></tt>
+<br><tt><font color="#000066">status=nf_inq_varid(ncid, 'rh', RHID)</font></tt>
+<br><tt><font color="#000066">status=nf_rename_var(ncid, RHID, 'rel_hum')</font></tt>
+<br><tt><font color="#000066">status=nf_enddef_dim(ncid)</font></tt>
+<br><tt><font color="#000066">-----</font></tt></ol>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="attribute"></a><font face="標楷體"><font color="#3333FF"><font size=+2>進階五：建立與取得說明資料：</font></font></font>
+<ol><font color="#000000">在前面的進階一至進階四中你已經建立好了一個 NetCDF
+的檔案了，但是你這個檔案內容的屬性還沒有很詳細的被定義下來，這個說明部分就是所謂的
+attributes 部分。為何要加入這一部分呢？這是因為我們在前面的時候就已經提到了，
+NetCDF 可以有很詳細的檔案屬性說明，以避免檔案的內容被誤判！基本上 Models-3
+裡面的輸出檔，都有很詳細的說明檔頭，另外，針對每一個變數亦均加入了適當的說明，例如單位(moles/s)、長名(long
+name)等等。底下說說主要的幾個指令吧！</font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_PUT_ATT_type(ncid, varid, 'name', xtype, len,
+type_var(x))</font></li>
+
+<br><font color="#000000">同樣的，與（進階四）中提到的相同， xtype 共分為六種型態：nf_byte,
+nf_char, nf_short, nf_int, nf_float, nf_double 等六種。而 type_var(x) 是一個陣列喔！例如我們要對
+rh 進行變數說明，說明的內容為 『valid_range』，而我們給他的合理區間在 （0.0D0
+～ 100.0D0）則：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">double rhrange(2)</font></tt>
+<br><tt><font color="#000066">data&nbsp; rhrange&nbsp; /0.0D0, 100.0D0/</font></tt>
+<br><tt><font color="#000066">status=nf_put_att_double(ncid, RHID, 'valid_range',
+nf_double, 2, rhrange)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_INQ_ATT(ncid, varid, 'name', xtype, len)</font></li>
+
+<br><font color="#000000">調查 attributes 的檔頭說明，通常與 nf_inq_varid
+配合使用。</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_inq_varid(1, 'rh', rhid)</font></tt>
+<br><tt><font color="#000066">status=nf_inq_att(ncid, rhid, name, xtype,
+len)</font></tt>
+<br><tt><font color="#000066">write(*,*), name, xtype, len</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_GET_ATT_type(ncid, varid, 'name', type_var(x))</font></li>
+
+<br><font color="#000000">取得 attribute 的內容！</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_get_att_double(ncid, rhid, 'balid_range',
+vrval)</font></tt>
+<br><tt><font color="#000066">-----</font></tt>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_RENAME_ATT(ncid, varid, 'name', newname)</font></li>
+
+<br><font color="#000000">與 nf_rename_var 相似的用法，往前翻翻看看吧！</font>
+<br>&nbsp;
+<li>
+<font color="#3333FF">NF_DEL_ATT(ncid, varid, 'name')</font></li>
+
+<br><font color="#000000">就是砍到不要的 attribute 咯，方法如下：</font>
+<br><tt><font color="#000066">-----</font></tt>
+<br><tt><font color="#000066">status=nf_del_att(ncid, rhid, 'valid_range')</font></tt>
+<br><tt><font color="#000066">-----</font></tt></ol>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="program"></a><font face="標楷體"><font color="#3333FF"><font size=+2>進階六：程式範例：</font></font></font>
+<blockquote><font color="#000000">基本上，如同一開始說到的，進階這一部分的資料在
+for fortran 的 NetCDF 手冊中有蠻詳細的說明，所以如果你有任何關於程式的寫作問題真的直接就去找原文啦！不過原文手冊中雖然有對於每一個指令進行詳盡的解釋，但是並沒有一個完整的
+fortran 程式，因此鳥哥我本人就寫了幾個小程式來玩玩啦，如果你有興趣的話，可以下載來執行看看囉。（註：寫完了這個程式後，讓小弟對於
+NetCDF 檔案的製作過程有更清楚了理解。）</font>
+<p><font color="#000000">範例一：建立一個三維的檔案，裡頭有兩個變數，分別為
+PM10 與 PM2_5，其中，PM10 為 50 ，PM2.5 為 30，且說明內容 PM 濃度為 ug/m3。按<a href="createncf.f">這裡</a>下載吧！</font></blockquote>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="utility"></a><font face="標楷體"><font color="#3333FF"><font size=+2>有用的工具：</font></font></font>
+<blockquote><b><font color="#000000"><font size=+1>NetCDF 的儲存格式：</font></font></b>
+<br><font color="#000000">NetCDF 在儲存的時候大致上分為兩個區域，如同前面在講到
+CDL 檔案的時候提到的樣子。分為：</font>
+<ul>
+<li>
+<font color="#000000">檔頭（header）：主要用來記錄變數名稱、個數與型態；dimention名稱、個數與型態；以及相關的說明內容。由於這一部分內容並沒有用到實際資料儲存的空間，所以使用的空間並不會多出來！</font></li>
+
+<li>
+<font color="#000000">資料區（data）：這一部分就是實際資料記錄的地方啦！由於這一部分的空間有涉及你當初設定的變數型態，假如你的資料為整數，但是你記錄的儲存格式為倍精倍數，則這個區域的儲存空間無形之中會變的很大！</font></li>
+</ul>
+<font color="#000000">基本上就僅分為這兩個部分！所以你在看檔案的時候，看前面就知道後面資料的型態！</font>
+<p><b><font color="#000000"><font size=+1>ncgen：</font></font></b>
+<br><font color="#000000">這個小程式主要是用來將 CDL 檔案轉成 NetCDF 檔案的工作！假設你已經寫了一個
+CDL 檔案，名稱為 netcdf.cdl ，你想將此檔案轉成 NetCDF 檔，則只要下達：</font>
+<blockquote><font color="#000000"># </font><font color="#3333FF">ncgen&nbsp;
+-o&nbsp; netcdf.ncf&nbsp; netcdf.cdl</font></blockquote>
+<font color="#000000">就可以了，語法為： ncgen&nbsp; -o&nbsp; [output filename]&nbsp;
+[input filename]。</font>
+<br><font color="#000000">而且 ncgen 亦提供一個不錯的選項，亦即將你的 netcdf.cdl
+檔案轉成一個 fortran 程式，則你只要將此 程式 編譯並執行後，則可以將 netcdf.cdl
+轉成 NetCDF 檔案！</font>
+<blockquote><font color="#000000"># </font><font color="#3333FF">ncgen&nbsp;
+-f&nbsp; netcdf.cdl > netcdf.f</font></blockquote>
+<font color="#000000">上式中 netcdf.f 為 fortran 程式檔。不過用此語法需要注意，因為此一語法僅適合比較小的
+CDL 檔案！</font>
+<p><b><font color="#000000"><font size=+1>ncdump：</font></font></b>
+<br><font color="#000000">另外一個最有常用到的程式稱為 ncdump ，主要的目的在於將
+NetCDF 檔案資料讀成 ASCII 碼的資料！由於 NetCDF 儲存區分為兩段，一個為檔頭、一個為資料區，若你只想讀取資料區的變數使用情況，則可以下達：</font>
+<blockquote><font color="#000000"># </font><font color="#3333FF">ncdump&nbsp;
+-h&nbsp; netcdf.ncf</font></blockquote>
+<font color="#000000">則螢幕上將出現 netcdf.ncf 這個檔案的檔頭資料。而如果你想要將所有的檔案都輸出成為
+ASCII 碼資料，則直接下達：</font>
+<blockquote><font color="#000000"># </font><font color="#3333FF">ncdump&nbsp;
+netcdf.ncf | more</font></blockquote>
+<font color="#000000">即可，在上式中， "| more"這個指令作用是將 netcdf.ncf
+這個檔案以一個畫面一個畫面的方式展示之意。而如果你想要將畫面的資料存成一個
+CDL 檔案，可以下達：</font>
+<blockquote><font color="#000000"># </font><font color="#3333FF">ncdump&nbsp;
+netcdf.ncf > netcdf.cdl</font></blockquote>
+<font color="#000000">則程式將直接把 netcdf.ncf 檔案轉存成一個 netcdf.cdl
+的 ASCII 碼格式的檔案！如此則你將看的到裡頭的資料囉！</font>
+<br><font color="#000000">不過使用的時候要小心，因為一個 Models-3 輸出檔常常是幾百
+MB 的大小，如果你將 NetCDF 的資料直接存成 ASCII 碼的檔案，將耗費很多時間與空間！因此上，除非是你在除錯或者是檔案很小，否則不是很必要將檔案轉存成
+ASCII
+格式的檔案！</font>
+<br><font color="#000000">而若你只想察看 netcdf.ncf 檔案裡面一個名為 'TEMP'
+的變數的話，你可以下達：</font>
+<blockquote><font color="#000000"># </font><font color="#3333FF">ncdump&nbsp;
+-v&nbsp; TEMP netcdf.ncf</font></blockquote>
+<font color="#000000">語法為：ncdump&nbsp; -v&nbsp; [變數名稱] [檔案名稱]。這也是一個常用的參數喔！</font></blockquote>
+<font color="#000000"><font size=+1><a href="#開始">Top</a></font></font>
+<br>
+<hr WIDTH="100%">
+<br><a NAME="網站連結"></a><font face="標楷體"><font color="#3333FF"><font size=+2>網站連結：</font></font></font>
+<blockquote><font face="Times New Roman Baltic"><font size=+1><a href="guidef/guidef-1.html" target="_blank">NetCDF
+User's Guide for FORTRAN</a></font></font>
+<br><font size=+1><a href="http://www.unidata.ucar.edu/packages/netcdf/" target="_blank"><font face="Times New Roman Baltic">Unidata</font><font face="標楷體">官方網站</font></a></font></blockquote>
+
+<dt>
+
+<hr WIDTH="100%"></dt>
+
+<center><font face="Times New Roman Baltic"><font size=+2><a href="../models3-70program.html">Back</a></font></font></center>
+
+</body>
+</html>
